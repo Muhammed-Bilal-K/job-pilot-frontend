@@ -15,6 +15,11 @@ interface InputValues {
   password: string | undefined;
 }
 
+interface InputPass {
+  email : string | undefined;
+  npassword: string | undefined;
+}
+
 interface InputValuesEmail {
   email: string | undefined;
 }
@@ -60,6 +65,17 @@ export const login = async (creadits: InputValues) => {
 export const UserByEmail = async (creadits: InputValuesEmail) => {
   try {
     const res = await Api.post(authRoutes.UserByEmail, { ...creadits });
+
+    return res;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const UpdatePassByEmail = async (data : InputPass) => {
+  try {
+    const res = await Api.post(authRoutes.UpadtePassByEmail, { ...data });
 
     return res;
   } catch (err) {

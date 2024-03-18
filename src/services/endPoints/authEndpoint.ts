@@ -6,14 +6,14 @@ const authRoutes = {
     login: '/api/v1/auth/login',
 
     UserByEmail:'/api/v1/auth/forget-password',
-  
+    
+    UpadtePassByEmail:'/api/v1/auth/update-password',
+
     Adminsignin: '/v4/api/auth/admin/signin',
     
     Adminlogin: '/v4/api/auth/admin/login',
 
     getAdmin: (adminId: string) => `/v4/api/auth/admin/${adminId}`,
-
-    UpdatePassword: '/v4/api/auth',
 
     AdminsendEmail: '/v4/api/auth/admin/verify',
 

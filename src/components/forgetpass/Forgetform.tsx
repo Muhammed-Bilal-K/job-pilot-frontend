@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import logoPilot from "../../assets/Logo.png";
 import { useLocation } from "react-router-dom";
 import { message } from "antd";
+import { UpdatePassByEmail } from "../../apis/auth";
+import { useNavigate } from "react-router-dom";
+
+interface InputPass {
+  email : string | undefined;
+  npassword: string | undefined;
+}
 
 const Forgetform: React.FC = () => {
   const location = useLocation();
   const email = location.state.email;
   const [npassword, setnPassword] = useState<string>("");
   const [cnpassword, setcnPassword] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleChangePass = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -27,8 +35,17 @@ const Forgetform: React.FC = () => {
       return;
     }
 
-    
-    
+    const userPassChange: InputPass= {
+      email : email,
+      npassword : npassword,
+    };
+    const res = await UpdatePassByEmail(userPassChange);
+    if(res.data.message == "Password Updated Successfully!"){
+      message.success(res.data.message);
+      setTimeout(()=>{
+        navigate('/login');
+      },1000);
+    }
   };
 
   return (
