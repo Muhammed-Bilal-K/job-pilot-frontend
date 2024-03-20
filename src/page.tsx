@@ -5,18 +5,21 @@ import ForgetPass from "./components/forgetpass/ForgetPass";
 import Forgetform from "./components/forgetpass/Forgetform";
 import Verification from "./components/verification/Verification";
 import { Route, Routes } from "react-router-dom";
+import PrivateCompo from "./components/ProtectRoute/PrivateCompo";
 
 export default function App() {
   return (
-      <>
+    <>
       <Routes>
-        <Route path="/" element={< Hero />}/>
-        <Route path="/login" element={< Login />}/>
-        <Route path="/signin" element={< Signin />}/>
-        <Route path="/forgetpass" element={< ForgetPass />}/>
-        <Route path="/verification" element={< Verification />}/>
-        <Route path="/forgetform" element={< Forgetform />}/>
+        <Route path="/" element={<Hero />} />
+        <Route element={<PrivateCompo />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/forgetpass" element={<ForgetPass />} />
+          <Route path="/verification" element={<Verification />} />
+          <Route path="/forgetform" element={<Forgetform />} />
+        </Route>
       </Routes>
-      </>
-  )
+    </>
+  );
 }

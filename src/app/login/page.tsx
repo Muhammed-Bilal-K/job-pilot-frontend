@@ -14,6 +14,7 @@ const Login : React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  // const [error, setError] = useState('');
 
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -22,7 +23,7 @@ const Login : React.FC = () => {
       password,
     });
     try {
-      if(email == '' || password == ''){
+      if(email.trim() == '' || password.trim() == ''){
         message.info("Input can't empty!");
         return ;
       }
@@ -34,16 +35,17 @@ const Login : React.FC = () => {
       console.log(res.data);
       if(res.data.message == "Account logined successfully"){
         message.success(res.data.message);
-        localStorage.setItem("VerifyToken", res.data.token);
+        localStorage.setItem("Token", res.data.token);
         setTimeout(()=>{
           navigate('/');
         },1000);
       }
-    } catch (error) {
-      
+    } catch (error: any) {
+      // setError(error.response.data.message);
+      message.error(error.response.data.message);
     }
-
   };
+  
 
   const handleGoogleSignUp = () => {
     

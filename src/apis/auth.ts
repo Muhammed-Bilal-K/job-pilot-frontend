@@ -29,6 +29,10 @@ interface OtpValues {
   activation_code: string | undefined; 
 }
 
+interface OtpResed {
+  email: string | undefined; 
+}
+
 export const register = async (newUserRegi: FormValues) => {
   try {
     const res = await Api.post(authRoutes.signup, { ...newUserRegi });
@@ -51,13 +55,23 @@ export const activeUser = async (otp: OtpValues) => {
   }
 };
 
-export const login = async (creadits: InputValues) => {
+export const resendUserOtp = async (email: OtpResed) => {
   try {
-    const res = await Api.post(authRoutes.login, { ...creadits });
+    const res = await Api.post(authRoutes.resendUserOtp, { email });
 
     return res;
   } catch (err) {
     console.log(err);
+    throw err;
+  }
+};
+
+export const login = async (creadits: InputValues) => {
+  try {
+    const res = await Api.post(authRoutes.login, { ...creadits },{withCredentials : true});
+
+    return res;
+  } catch (err : any) {
     throw err;
   }
 };
@@ -67,8 +81,7 @@ export const UserByEmail = async (creadits: InputValuesEmail) => {
     const res = await Api.post(authRoutes.UserByEmail, { ...creadits });
 
     return res;
-  } catch (err) {
-    console.log(err);
+  } catch (err : any) {
     throw err;
   }
 };
@@ -78,8 +91,7 @@ export const UpdatePassByEmail = async (data : InputPass) => {
     const res = await Api.post(authRoutes.UpadtePassByEmail, { ...data });
 
     return res;
-  } catch (err) {
-    console.log(err);
+  } catch (err : any) {
     throw err;
   }
 };

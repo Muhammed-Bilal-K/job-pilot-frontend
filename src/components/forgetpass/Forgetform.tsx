@@ -19,34 +19,39 @@ const Forgetform: React.FC = () => {
 
   const handleChangePass = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    
-    if (cnpassword === "" || npassword === "") {
-      message.info("Input field can't be empty");
-      return;
-    }
-    
-    if (npassword.length < 4) {
-      message.info("Minimum length should be 4");
-      return;
-    }
+    try {
+      if (cnpassword === "" || npassword === "") {
+        message.info("Input field can't be empty");
+        return;
+      }
+  
+      if (npassword.length < 4) {
+        message.info("Minimum length should be 4");
+        return;
+      }
+  
+      if (cnpassword !== npassword) {
+        message.info("Password doesn't Match");
+        return;
+      }
+  
+      const userPassChange: InputPass = {
+        email: email,
+        npassword: npassword,
+      };
+  
+      const res = await UpdatePassByEmail(userPassChange);
 
-    if (cnpassword !== npassword) {
-      message.info("Password doesn't Match");
-      return;
+      if (res.data.message === "Password Updated Successfully!") {
+        message.success(res.data.message);
+        setTimeout(() => {
+          navigate('/login');
+        }, 1000);
+      }
+    } catch (error: any) {
+      message.error(error.response.data.message);
     }
-
-    const userPassChange: InputPass= {
-      email : email,
-      npassword : npassword,
-    };
-    const res = await UpdatePassByEmail(userPassChange);
-    if(res.data.message == "Password Updated Successfully!"){
-      message.success(res.data.message);
-      setTimeout(()=>{
-        navigate('/login');
-      },1000);
-    }
-  };
+  };  
 
   return (
     <>

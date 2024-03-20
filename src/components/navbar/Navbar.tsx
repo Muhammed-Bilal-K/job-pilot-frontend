@@ -5,7 +5,7 @@ import bellIcons from '../../assets/BellRinging.png';
 import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
-  const token : string | null = localStorage.getItem("VerifyToken");
+  const token : string | null = localStorage.getItem("Token");
   return (
     <>
     <div className="navbar">

@@ -33,8 +33,8 @@ const ForgetPass: React.FC = () => {
         },1000);
       }
 
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      message.error(error.response.data.message);
     }
   };
 

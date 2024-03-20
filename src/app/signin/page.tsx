@@ -24,7 +24,6 @@ const Signin: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("candidate");
-  // const [loading, setLoading] = useState<boolean>(false);
 
   function handleTypeSelection(type: string) {
     setSelectedType(type);
@@ -42,6 +41,16 @@ const Signin: React.FC = () => {
         confirmPassword,
       });
 
+      if (
+        email.trim() == "" ||
+        username.trim() == "" ||
+        email.trim() == "" ||
+        confirmPassword.trim() == "" ||
+        password.trim() == ""
+      ) {
+        return message.info("Input field can't be empty");
+      }
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         message.info("Invalid email format");
@@ -49,20 +58,17 @@ const Signin: React.FC = () => {
       }
 
       if (password && password.length < 4 && confirmPassword) {
-        message.info("Minimum length should be 4");
+        message.info("Password minimum length should be 4");
         return;
       }
 
-      if (
-        email == "" ||
-        username == "" ||
-        email == "" ||
-        confirmPassword == "" ||
-        password == ""
-      ) {
-        message.info("Input field can't be empty");
-      } else if (password === confirmPassword && email && username) {
-        message.info("not empty");
+       
+      if (password === confirmPassword && email && username) {
+        message.open({
+          type: 'loading',
+          content: 'Action in progress..',
+          duration: 2,
+        });
         const newUserRegi: FormValues = {
           fullname : fullName,
           username: username,
@@ -78,14 +84,14 @@ const Signin: React.FC = () => {
           message.success(res.data.message);
           localStorage.setItem("VerifyToken", res.data.activationToken!);
           setTimeout(()=>{
-            navigate('/login');
+            navigate('/verification', { state: { email: email } });
           },1000);
         }
       } else {
         message.info("Password doesn't Match");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error : any) {
+      message.error(error.response.data.message);
     }
   };
 

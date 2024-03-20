@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import logoPilot from '../../assets/Logo.png';
 import { message } from "antd";
-import { activeUser } from "../../apis/auth";
-import { useNavigate } from "react-router-dom";
+import { activeUser, resendUserOtp } from "../../apis/auth";
+import { useNavigate , useLocation } from "react-router-dom";
 
 interface OtpValues {
   activation_token: string | undefined;
@@ -10,9 +10,11 @@ interface OtpValues {
 }
 
 const Verification: React.FC = () => {
+    const location = useLocation();
+    const email = location.state.email;
     const [otp, setOtp] = useState('');
     const [showResend, setShowResend] = useState(false);
-    const [countdown, setCountdown] = useState(180);
+    const [countdown, setCountdown] = useState(30);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,6 +39,12 @@ const Verification: React.FC = () => {
           message.info("Invalid Otp!");
           return ;
         }
+
+        if(countdown === 0){
+          message.info("Otp Expired!");
+          return ;
+        }
+
         const token = localStorage.getItem("VerifyToken");
         const newUserVerification: OtpValues = {
           activation_code : otp,
@@ -51,15 +59,19 @@ const Verification: React.FC = () => {
             navigate('/login');
           },1000);
         }
-        
-      } catch (error) {
-        
+      } catch (error: any) {
+        message.error(error.response.data.message);
       }
     }
 
-    const handleResend = () => {
+    const handleResend = async () => {
       setShowResend(true);
-      setCountdown(180); 
+      setCountdown(30); 
+      const res = await resendUserOtp(email);
+      if(res.data.message == "Resend Otp successfully sent to your email address."){
+        message.success(res.data.message);
+        localStorage.setItem("VerifyToken", res.data.activationToken!);
+      }
     }
 
   return (
@@ -71,7 +83,7 @@ const Verification: React.FC = () => {
         <h1 className="font-bold text-3xl">Email Verification</h1>
         <div className="message-section">
           <p>
-            We’ve sent an email verification sample@gmail.com to verify your <br />
+            We’ve sent an email verification {email} to verify your <br />
             email address and activate your account.
           </p>
         <div className="input-section">
