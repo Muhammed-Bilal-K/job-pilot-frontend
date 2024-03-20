@@ -136,7 +136,8 @@ const Signin: React.FC = () => {
                 </span>
               </label>
             </div>
-          </div>
+          </div> 
+          
           <div className="all-aligh-set">
             <div className="flex justify-between">
               <div>
