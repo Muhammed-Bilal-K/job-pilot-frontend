@@ -21,8 +21,6 @@ const billandplans = [
     planName: "Premium Plan",
     amount: "$30",
     desc: "Premium plan description",
-    date: "2024-03-24",
-    smallDesc: "Premium",
   },
 ];
 
@@ -30,49 +28,36 @@ const Bills: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [planName, setPlanName] = useState("");
   const [planPrice, setPlanPrice] = useState("");
-  const [expireDate, setExpireDate] = useState("");
-  const [planFeatures, setPlanFeatures] = useState("");
+  const [planFeatures, setPlanFeatures] = useState([""]);
   const [planDescription, setPlanDescription] = useState("");
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handlePlanNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPlanName(e.target.value);
+  const handlePlanFeaturesChange = (index: number, value: string) => {
+    const updatedFeatures = [...planFeatures];
+    updatedFeatures[index] = value;
+    setPlanFeatures(updatedFeatures);
   };
 
-  const handlePlanPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPlanPrice(e.target.value);
+  const addPlanFeature = () => {
+    setPlanFeatures([...planFeatures, ""]);
   };
 
-  const handleExpireDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedDate = e.target.value;
-    const currentDate = new Date().toISOString().split("T")[0];
-    if (selectedDate >= currentDate) {
-      setExpireDate(selectedDate);
-    }
-  };
-
-  const handlePlanFeaturesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPlanFeatures(e.target.value);
-  };
-
-  const handlePlanDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPlanDescription(e.target.value);
+  const removePlanFeature = (index: number) => {
+    const updatedFeatures = [...planFeatures];
+    updatedFeatures.splice(index, 1);
+    setPlanFeatures(updatedFeatures);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submit form:", planName, planPrice, expireDate, planFeatures, planDescription);
-    // Clear form fields
-    setPlanName("");
-    setPlanPrice("");
-    setExpireDate("");
-    setPlanFeatures("");
-    setPlanDescription("");
-    // Close modal
-    setIsModalOpen(false);
+    console.log(planName);
+    console.log(planPrice);
+    console.log(planFeatures);
+    console.log(planDescription);
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -84,10 +69,11 @@ const Bills: React.FC = () => {
           {billandplans.map((bill, index) => (
             <div className="bill-box" key={index}>
               <h3>{bill.planName}</h3>
-              <p className="billAmount">{bill.amount}<span>/month</span> </p>
-              <p className="billdesc">{bill.desc}</p>
-              <p className="billdate">{bill.date}</p>
-              <p className="pb-3">{bill.smallDesc}</p>
+              <p className="billAmount">
+                {bill.amount}
+                <span>/month</span>{" "}
+              </p>
+              <p className="billdesc mb-2">{bill.desc}</p>
               <button className="billedit">Edit Now</button>
               <button className="billdelete">Delete</button>
             </div>
@@ -107,117 +93,109 @@ const Bills: React.FC = () => {
           aria-hidden="true"
           className="fixed inset-0 z-50 flex items-center justify-center"
         >
-          <div className="bg-black bg-opacity-50 fixed inset-0" onClick={toggleModal}></div>
+          <div
+            className="bg-black bg-opacity-50 fixed inset-0"
+          ></div>
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-4 md:p-5 relative z-99">
-            <div className="flex items-center justify-between border-b">
-              <h3 className="text-lg font-semibold text-gray-900">Create New Product</h3>
-              <button
-                type="button"
-                className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-full w-8 h-8 flex items-center justify-center"
-                onClick={toggleModal}
-              >
-                <svg
-                  className="w-4 h-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Create New Product
+            </h3>
             <form className="mt-4" onSubmit={handleSubmit}>
-              <div className="grid gap-4 mb-4 grid-cols-2">
-                <div className="col-span-2">
-                  <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">
+              <div className="grid gap-4 mb-4">
+                <div>
+                  <label
+                    htmlFor="planName"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
                     Plan Name
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    id="name"
                     value={planName}
-                    onChange={handlePlanNameChange}
-                   
+                    onChange={(e) => setPlanName(e.target.value)}
                     className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="Enter plan name"
                     required
                   />
                 </div>
-                <div className="col-span-2">
-                  <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900">
+                <div>
+                  <label
+                    htmlFor="planPrice"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
                     Plan Price
                   </label>
                   <input
                     type="text"
-                    name="price"
-                    id="price"
                     value={planPrice}
-                    onChange={handlePlanPriceChange}
+                    onChange={(e) => setPlanPrice(e.target.value)}
                     className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="Enter plan price"
                     required
                   />
                 </div>
-                <div className="col-span-2">
-                  <label htmlFor="expireDate" className="block mb-2 text-sm font-medium text-gray-900">
-                    Expire Date
-                  </label>
-                  <input
-                    type="date"
-                    name="expireDate"
-                    id="expireDate"
-                    value={expireDate}
-                    onChange={handleExpireDateChange}
-                    className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    required
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label htmlFor="planFeatures" className="block mb-2 text-sm font-medium text-gray-900">
+                <div>
+                  <label
+                    htmlFor="planFeatures"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
                     Plan Features
                   </label>
-                  <input
-                    type="text"
-                    name="planFeatures"
-                    id="planFeatures"
-                    value={planFeatures}
-                    onChange={handlePlanFeaturesChange}
-                    className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="Enter plan features"
-                    required
-                  />
+                  {planFeatures.map((feature, index) => (
+                    <div key={index} className="flex items-center px-1 py-1">
+                      <input
+                        type="text"
+                        value={feature}
+                        onChange={(e) =>
+                          handlePlanFeaturesChange(index, e.target.value)
+                        }
+                        className="mr-2 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                        placeholder="Enter plan feature"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removePlanFeature(index)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                  <button type="button" onClick={addPlanFeature}>
+                    Add Feature
+                  </button>
                 </div>
-                <div className="col-span-2">
-                  <label htmlFor="planDescription" className="block mb-2 text-sm font-medium text-gray-900">
+                <div>
+                  <label
+                    htmlFor="planDescription"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
                     Plan Description
                   </label>
                   <textarea
                     id="planDescription"
-                    name="planDescription"
                     rows={4}
                     value={planDescription}
-                    onChange={handlePlanDescriptionChange}
+                    onChange={(e) => setPlanDescription(e.target.value)}
                     className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="Enter plan description"
                     required
                   ></textarea>
                 </div>
               </div>
-              <div className="flex justify-end mt-6">
+              <div className="flex justify-end">
                 <button
                   type="button"
-                  className="text-gray-500 hover:text-gray-700 mr-4"
                   onClick={toggleModal}
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center mr-2"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
                 >
-                  Add New Plan
+                  Add Plan
                 </button>
               </div>
             </form>

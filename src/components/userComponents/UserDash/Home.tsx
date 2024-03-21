@@ -1,12 +1,10 @@
 import React from "react";
-import NavBar from "../adminNavbar/adminNav";
+import NavBar from "../userNavbar/userNav";
 import Jobpilot from "../../../assets/Logo.png";
 import Notification from "../../../assets/BellRinging.png";
 import user from "../../../assets/Ellipse 18.png";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "../Showcase/Dashboard";
-import Candidate from "../Showcase/Candidate";
-import Bills from "../Showcase/Bills";
 
 const Home: React.FC = () => {
   return (
@@ -17,9 +15,9 @@ const Home: React.FC = () => {
         userProfileImage={user}
       />
       <Routes>
-        <Route path="/admin-dash" element={<Dashboard />} />
-        <Route path="/admin-dash/candidate_list" element={<Candidate />} />
-        <Route path="/admin-dash/bills_details" element={<Bills />} />
+        <Route path="/user-dash" element={<Dashboard />} />
+        <Route path="/applied_jobs" element={""} />
+        <Route path="/favorite_jobs" element={""} />
       </Routes>
     </>
   );
