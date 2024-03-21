@@ -1,11 +1,7 @@
-import Login from "./app/login/page";
-import Signin from "./app/signin/page";
 import Hero from "./app/home/Hero";
-import ForgetPass from "./components/forgetpass/ForgetPass";
-import Forgetform from "./components/forgetpass/Forgetform";
-import Verification from "./components/verification/Verification";
 import { Route, Routes } from "react-router-dom";
-import PrivateCompo from "./components/ProtectRoute/PrivateCompo";
+import PrivateCompo from "./routes/ProtectRoute/PrivateCompo";
+import { RootMangament } from "./routes/Index";
 
 export default function App() {
   return (
@@ -13,11 +9,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Hero />} />
         <Route element={<PrivateCompo />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/forgetpass" element={<ForgetPass />} />
-          <Route path="/verification" element={<Verification />} />
-          <Route path="/forgetform" element={<Forgetform />} />
+        <Route path={"/*"} element={<RootMangament />} />
         </Route>
       </Routes>
     </>

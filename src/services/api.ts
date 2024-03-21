@@ -5,3 +5,6 @@ const Api = axios.create({
 });
 
 export {Api}
+
+
+//time out, axios interceptor, cancel tokens. 

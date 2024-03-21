@@ -1,8 +1,8 @@
 import React, { useState, MouseEvent } from "react";
-import loginlogo from "../../assets/loginlogo.png";
-import logoPilot from "../../assets/Logo.png";
+import loginlogo from "../../../assets/loginlogo.png";
+import logoPilot from "../../../assets/Logo.png";
 import { message } from "antd";
-import { UserByEmail } from '../../apis/auth';
+import { UserByEmail } from '../../../apis/auth';
 import { useNavigate } from "react-router-dom";
 
 interface InputValuesEmail {

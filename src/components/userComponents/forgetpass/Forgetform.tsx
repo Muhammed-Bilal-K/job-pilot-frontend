@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import logoPilot from "../../assets/Logo.png";
+import logoPilot from "../../../assets/Logo.png";
 import { useLocation } from "react-router-dom";
 import { message } from "antd";
-import { UpdatePassByEmail } from "../../apis/auth";
+import { UpdatePassByEmail } from "../../../apis/auth";
 import { useNavigate } from "react-router-dom";
 
 interface InputPass {

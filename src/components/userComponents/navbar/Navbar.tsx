@@ -1,7 +1,7 @@
 import React from "react";
-import logoPilot from '../../assets/Logo.png';
-import profilePic from '../../assets/Ellipse 18.png';
-import bellIcons from '../../assets/BellRinging.png';
+import logoPilot from '../../../assets/Logo.png';
+import profilePic from '../../../assets/Ellipse 18.png';
+import bellIcons from '../../../assets/BellRinging.png';
 import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import logoPilot from '../../assets/Logo.png';
+import logoPilot from '../../../assets/Logo.png';
 import { message } from "antd";
-import { activeUser, resendUserOtp } from "../../apis/auth";
+import { activeUser, resendUserOtp } from "../../../apis/auth";
 import { useNavigate , useLocation } from "react-router-dom";
 
 interface OtpValues {
