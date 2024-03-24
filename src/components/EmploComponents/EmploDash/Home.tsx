@@ -18,8 +18,8 @@ const Home: React.FC = () => {
       />
       <Routes>
         <Route path="/emplo-dash" element={<Dashboard />} />
-        <Route path="/post_job" element={<Postjob />} />
-        <Route path="/my_jobs" element={<MyJobs />} />
+        <Route path="/emplo-dash/post_job" element={<Postjob />} />
+        <Route path="/emplo-dash/my_jobs" element={<MyJobs />} />
       </Routes>
     </>
   );

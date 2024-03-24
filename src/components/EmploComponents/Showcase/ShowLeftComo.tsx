@@ -9,22 +9,22 @@ export const ShowLeftComponent: React.FC = () => {
     <>
       <div className="showcase-left">
         <div className="showcase-all">
-          <p>candidate dashboard</p>
+          <p>Employer dashboard</p>
         </div>
         <div className="show-inside-left">
-          <Link to="/emplo-dash" className="btn-showcase">
+          <Link to="/employer/emplo-dash" className="btn-showcase">
             <RiStackLine className="showcase-icons" /> <span className="ml-5">Overview</span>
           </Link>
-          <Link to="/emplo-dash/post_job" className="btn-showcase">
+          <Link to="/employer/emplo-dash/post_job" className="btn-showcase">
             <FiPlusCircle className="showcase-icons" /> <span className="ml-5">Post Job</span>
           </Link>
-          <Link to="/emplo-dash/my_jobs" className="btn-showcase">
+          <Link to="/employer/emplo-dash/my_jobs" className="btn-showcase">
             <FiBriefcase className="showcase-icons" /> <span className="ml-5">My Jobs</span>
           </Link>
-          <Link to="/emplo-dash/favorite_candidates" className="btn-showcase">
+          <Link to="/employer/emplo-dash/favorite_candidates" className="btn-showcase">
             <FaRegBookmark className="showcase-icons" /> <span className="ml-5">Favorite Candidates</span>
           </Link>
-          <Link to="/emplo-dash/bills_details" className="btn-showcase">
+          <Link to="/employer/emplo-dash/bills_details" className="btn-showcase">
             <FaMoneyBillAlt className="showcase-icons" /> <span className="ml-5">Bills & Details</span>
           </Link>
         </div>

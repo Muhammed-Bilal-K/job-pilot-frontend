@@ -9,7 +9,8 @@ import Verification from "../components/userComponents/verification/Verification
 import EmployerRoute from "./EmployerRoute";
 import AdminRoute from "./AdminRoute";
 import UserRoute from "./UserRoute";
-
+import AdminLogin from "../components/adminComponents/Login";
+import Joblist from "../components/userComponents/Joblist/Joblist";
 const RouteManagment: React.FC = () => {
   return (
     <>
@@ -21,6 +22,8 @@ const RouteManagment: React.FC = () => {
           <Route path="/verification" element={<Verification />} />
           <Route path="/forgetform" element={<Forgetform />} />
         </Route>
+        <Route path="/find-job" element={<Joblist/>} />
+        <Route path="/admin/login" element={<AdminLogin/>} />
         <>
           <Route path="/candidate/*" element={<UserRoute />} />
         </>

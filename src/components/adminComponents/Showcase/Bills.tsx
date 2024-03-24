@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ShowLeftComponent } from "./ShowLeftComo";
 import { FiPlusCircle } from "react-icons/fi";
+import { PlanCreatedByAdmin } from "../../../apis/auth";
 
 const billandplans = [
   {
@@ -23,6 +24,13 @@ const billandplans = [
     desc: "Premium plan description",
   },
 ];
+
+interface PlanInputValues {
+  name: string;
+  description: string;
+  amount: string;
+  features: string[];
+}
 
 const Bills: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,12 +59,17 @@ const Bills: React.FC = () => {
     setPlanFeatures(updatedFeatures);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(planName);
-    console.log(planPrice);
-    console.log(planFeatures);
-    console.log(planDescription);
+    const planData : PlanInputValues = {
+      name : planName,
+      amount : planPrice,
+      description : planDescription,
+      features: planFeatures
+    }
+    const res =await PlanCreatedByAdmin(planData);
+    console.log(res.data);
+    
     setIsModalOpen(!isModalOpen);
   };
 

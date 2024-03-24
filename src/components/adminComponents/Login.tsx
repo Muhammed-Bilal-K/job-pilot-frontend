@@ -3,14 +3,14 @@ import loginlogo from '../../assets/loginlogo.png';
 import logoPilot from '../../assets/Logo.png';
 import { message } from "antd";
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../apis/auth';
+import { LoginByAdmin } from '../../apis/auth';
 
 interface InputValues {
   email: string | undefined;
   password: string | undefined;
 }
 
-const Login : React.FC = () => {
+const AdminLogin : React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -26,34 +26,24 @@ const Login : React.FC = () => {
         message.info("Input can't empty!");
         return ;
       }
-      const UserLogin:InputValues = {
+      const AdminLogin:InputValues = {
         email: email,
         password: password,
       };
-      const res =await login(UserLogin);
+      const res =await LoginByAdmin(AdminLogin);
       console.log(res.data);
       if(res.data.message == "Account logined successfully"){
         message.success(res.data.message);
-        localStorage.setItem("Token", res.data.token);
-        if (res.data.user.role === 'employer') {
-          setTimeout(()=>{
-            navigate('/employer/emplo-dash');
-          },1000);
-        }else{
-          setTimeout(()=>{
-            navigate('/');
-          },1000);
-        }
+        localStorage.setItem("AdminToken", res.data.token);
+       setTimeout(()=>{
+        navigate('/admin/admin-dash');
+       },1000)
       }
     } catch (error: any) {
       message.error(error.response.data.message);
     }
   };
   
-
-  const handleGoogleSignUp = () => {
-    
-  };
 
 
   return (
@@ -65,9 +55,9 @@ const Login : React.FC = () => {
               <img src={logoPilot} alt="login" className="login login-page" />
             </div>
           </div>
-          <h1 className="create_account">Sign In.</h1>
-          <h4 className="already_account">Don't have an account? <h2 className="inline cursor-pointer" onClick={()=> navigate('/signin')}>Sign In</h2></h4>
-          <div className="all-aligh-set">
+          <h1 className="create_account">Login.</h1>
+          <h1>Hi , Admin</h1>
+          <div className="all-aligh-set mb-0">
             <div>
               <input
                 type="email"
@@ -86,16 +76,11 @@ const Login : React.FC = () => {
                 placeholder="Password"
               />
             </div>
-            <p onClick={() => navigate('/forgetpass')} className='cursor-pointer flex justify-end'>Forget Password</p>
           </div>
-          <div>
-            <h6 className="mt-3 term-service"><input type="checkbox" name="" id="" />  I've read and agree with your Terms of Services</h6>
+          <div className='invisible'>
+            <div className='w-96'></div>
           </div>
-          <button onClick={handleRegister} className="register-button">Sign In<span className="text">  &#8594;</span></button>
-          <div className="text-center">
-          <span>OR</span>
-          </div>
-          <button onClick={handleGoogleSignUp} className="google-signup-button">Sign Up with Google</button>
+          <button onClick={handleRegister} className="register-button mt-0">Sign In<span className="text">  &#8594;</span></button>
         </div>
         <div className="register-image">
           <img className="" src={loginlogo} alt="Registration" />
@@ -105,4 +90,4 @@ const Login : React.FC = () => {
   );
 }
 
-export default Login;
+export default AdminLogin;

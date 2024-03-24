@@ -582,10 +582,10 @@
 .billAmount {
   font-size: 40px;
   font-weight: 700;
-  color: #0A65CC;
+  color: #0a65cc;
 }
 
-.billAmount span{
+.billAmount span {
   font-size: 20px;
 }
 
@@ -595,39 +595,201 @@
   font-weight: 400;
 }
 
-.billdate{
+.billdate {
   color: red;
-    font-weight: 700;
-    font-size: 20px;
+  font-weight: 700;
+  font-size: 20px;
 }
 
-.billedit{
+.billedit {
   padding: 10px 65px;
   border-radius: 5px;
-  background-color: #0A65CC;
+  background-color: #0a65cc;
   color: #fff;
 }
 
-.billdelete{
+.billdelete {
   padding: 10px 40px;
-    font-weight: 500;
-    border-radius: 5px;
-    color: #fff;
-    background-color: rgb(244, 13, 13);
-    margin-left: 10px;
+  font-weight: 500;
+  border-radius: 5px;
+  color: #fff;
+  background-color: rgb(244, 13, 13);
+  margin-left: 10px;
 }
 
-.border-dotted{
+.border-dotted {
   border: dotted #04285265;
   border-radius: 10px;
 }
 
-.border-dotted .posticon{
+.border-dotted .posticon {
   display: flex;
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 50px;
+  color: rgb(98 76 76 / 50%);
+}
+
+/* ///////////////////////////////////----------------- plan details -----------/////////////////////////////////////// */
+
+.showright {
+  background-color: white;
+  border: 1px solid #eee;
+  padding: 20px;
+}
+
+.showright .heading-subscription {
+  font-size: 25px;
+  font-weight: 700;
+  padding-top: 25px;
+  padding-left: 0;
+}
+
+
+.subscription-details {
+  display: flex;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.left-content {
+  width: 70%;
+  padding-right: 170px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.right-image {
+  width: 20%;
+}
+
+.subscription-plans {
+  display: flex;
+  justify-content: space-between; /* Align boxes in a row with equal space between */
+  align-items: stretch; /* Make all boxes the same height */
+}
+
+.subscription-plans .plan-all{
+  margin: 0px 40px;
+}
+
+.plan {
+  flex: 1; /* Each plan takes up an equal portion of the container */
+  border: 1px solid #0088ff;
+  padding: 10px;
+  margin: 0 5px;
+  border-radius: 10px;
+}
+
+.plan h3{
+  font-size: 20px;
+    font-weight: 700;
+    color: blue;
+}
+
+.plan p{
+  font-size: 13px;
+  font-weight: 400;
+  padding-top: 10px;
+  padding-bottom: 18px;
+}
+
+.plan .amount-month{
+  font-size: 30px;
+}
+
+.plan .amount-month span{
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.choose-plan-button {
+  padding: 10px 30px;
+    color: white;
+    background-color: blue;
+    margin: 30px 45px;
+}
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+.modal-content .post-Job{
+  font-size: 2rem;
+    font-weight: 700;
+    padding-top: 5px;
+    padding-left: 40px;
+}
+
+
+/* /////////////////////////////////////////job - find ///////////////////////////////////////////////////// */
+
+.job-Show{
+  background-color: #f1f2f4;
+  display: flex;
+    justify-content: space-between;
     width: 100%;
-    height: 100%;
-    font-size: 50px;
-    color: rgb(98 76 76 / 50%);
+    height: 80px;
+    align-items: center;
+    padding: 0px 170px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.job-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 40px 140px;
+}
+
+.job-box {
+  width: calc(33.33% - 10px);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 3px 1px #b8bcc0;
+}
+
+.job-box h3 {
+  margin-top: 0;
+}
+
+.job-box p {
+  margin: 5px 0;
+}
+
+.job-box-type-amount{
+  display: flex;
+  gap: 15px;
+}
+
+.job-box-logo-loca{
+  display: flex;
+  gap: 5px;
+}
+
+.job-box img {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.job-search-apply{
+  padding: 20px 40px;
+    border: 1px solid antiquewhite;
+    margin: 0px 140px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.job-filter input{
+  outline: none;
+  border: none;
+}
+
+.job-filter .input1{
+  width: 500px;
 }

@@ -1,5 +1,5 @@
-import { Api } from "../services/api";
-import authRoutes from "../services/endPoints/authEndpoint";
+import { Api, Api2, Api3 } from "../services/api";
+import authRoutes from "../services/endPoints/Endpoint";
 
 interface FormValues {
   fullname: string | undefined;
@@ -16,7 +16,7 @@ interface InputValues {
 }
 
 interface InputPass {
-  email : string | undefined;
+  email: string | undefined;
   npassword: string | undefined;
 }
 
@@ -26,11 +26,18 @@ interface InputValuesEmail {
 
 interface OtpValues {
   activation_token: string | undefined;
-  activation_code: string | undefined; 
+  activation_code: string | undefined;
 }
 
 interface OtpResed {
-  email: string | undefined; 
+  email: string | undefined;
+}
+
+interface PlanInputValues {
+  name: string;
+  description: string;
+  amount: string;
+  features: string[];
 }
 
 export const register = async (newUserRegi: FormValues) => {
@@ -68,10 +75,16 @@ export const resendUserOtp = async (email: OtpResed) => {
 
 export const login = async (creadits: InputValues) => {
   try {
-    const res = await Api.post(authRoutes.login, { ...creadits },{withCredentials : true});
+    const res = await Api.post(
+      authRoutes.login,
+      { ...creadits },
+      { withCredentials: true }
+    );
 
     return res;
-  } catch (err : any) {
+  } catch (err: any) {
+    console.log(err);
+    
     throw err;
   }
 };
@@ -81,14 +94,44 @@ export const UserByEmail = async (creadits: InputValuesEmail) => {
     const res = await Api.post(authRoutes.UserByEmail, { ...creadits });
 
     return res;
-  } catch (err : any) {
+  } catch (err: any) {
     throw err;
   }
 };
 
-export const UpdatePassByEmail = async (data : InputPass) => {
+export const UpdatePassByEmail = async (data: InputPass) => {
   try {
     const res = await Api.post(authRoutes.UpadtePassByEmail, { ...data });
+
+    return res;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const LoginByAdmin = async (data: InputValues) => {
+  try {
+    const res = await Api.post(authRoutes.loginByAdmin, { ...data });
+
+    return res;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const PlanCreatedByAdmin = async (data: PlanInputValues) => {
+  try {
+    const res = await Api.post(authRoutes.PlanCreatedByAdmin, { ...data });
+
+    return res;
+  } catch (err: any) {
+    throw err;
+  }
+};
+
+export const GetAllPlansDetails = async () => {
+  try {
+    const res = await Api.get(authRoutes.GetAllPlansDetails);
 
     return res;
   } catch (err : any) {
@@ -96,3 +139,21 @@ export const UpdatePassByEmail = async (data : InputPass) => {
   }
 };
 
+
+export const makePayment = async (stripeCustomer : any) => {
+  try {
+    const res = await Api2.post(authRoutes.Payment , { ...stripeCustomer });
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const CreateJobByCompany = async (data : any) => {
+  try {
+    const res = await Api3.post(authRoutes.CreateJob , { ...data });
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
