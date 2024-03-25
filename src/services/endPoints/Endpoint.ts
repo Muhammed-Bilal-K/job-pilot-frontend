@@ -19,7 +19,9 @@ const Routes = {
 
     Payment : "/api/v2/employer/plans",
 
-    CreateJob : "/api/v3/job/job-create"
+    CreateJob : "/api/v3/job/job-create",
+
+    ListAllJobs : "/api/v3/job/job-list"
   };
   
   export default Routes;

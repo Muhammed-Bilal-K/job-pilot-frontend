@@ -4,6 +4,8 @@ import logoPilot from '../../assets/Logo.png';
 import { message } from "antd";
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../apis/auth';
+import { useDispatch } from 'react-redux';
+import { signInSuccess } from '../../redux/slices/employer.slice';
 
 interface InputValues {
   email: string | undefined;
@@ -14,6 +16,7 @@ const Login : React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const dispatch =  useDispatch();
 
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -34,12 +37,14 @@ const Login : React.FC = () => {
       console.log(res.data);
       if(res.data.message == "Account logined successfully"){
         message.success(res.data.message);
-        localStorage.setItem("Token", res.data.token);
         if (res.data.user.role === 'employer') {
+          dispatch(signInSuccess(res.data.user));
+          localStorage.setItem("Emplo", res.data.token);
           setTimeout(()=>{
             navigate('/employer/emplo-dash');
           },1000);
         }else{
+          localStorage.setItem("Token", res.data.token);
           setTimeout(()=>{
             navigate('/');
           },1000);

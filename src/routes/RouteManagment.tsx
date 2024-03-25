@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "../app/login/page";
 import Signin from "../app/signin/page";
-import PrivateRoute from "./ProtectRoute/PrivateCompo";
 import Forgetform from "../components/userComponents/forgetpass/Forgetform";
 import ForgetPass from "../components/userComponents/forgetpass/ForgetPass";
 import Verification from "../components/userComponents/verification/Verification";
@@ -11,11 +10,12 @@ import AdminRoute from "./AdminRoute";
 import UserRoute from "./UserRoute";
 import AdminLogin from "../components/adminComponents/Login";
 import Joblist from "../components/userComponents/Joblist/Joblist";
+import PrivateRouteAuth from "./ProtectRoute/PrivateComAuth";
 const RouteManagment: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route element={<PrivateRoute />}>
+        <Route element={<PrivateRouteAuth  />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/forgetpass" element={<ForgetPass />} />

@@ -157,3 +157,12 @@ export const CreateJobByCompany = async (data : any) => {
     throw err;
   }
 };
+
+export const ListAllJobs = async () => {
+  try {
+    const res = await Api3.get(authRoutes.ListAllJobs);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};

@@ -7,8 +7,15 @@ import { Route, Routes } from "react-router-dom";
 import Dashboard from "../Showcase/Dashboard";
 import MyJobs from "../Showcase/MyJobs";
 import Postjob from "../Showcase/Postjob";
+import { useSelector } from 'react-redux'
 
 const Home: React.FC = () => {
+  const { Employer } : any = useSelector((state)=>{
+    return state
+ }) 
+
+ console.log(Employer);
+ 
   return (
     <>
       <NavBar

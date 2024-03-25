@@ -15,10 +15,10 @@ export const ShowLeftComponent: React.FC = () => {
             <RiStackLine className="showcase-icons" /> <span className="ml-5">Overview</span>
           </Link>
           <Link to="/candidate/user-dash/applied_jobs" className="btn-showcase">
-            <FiPlusCircle className="showcase-icons" /> <span className="ml-5">Post Job</span>
+            <FiPlusCircle className="showcase-icons" /> <span className="ml-5">Applied Job</span>
           </Link>
           <Link to="/candidate/user-dash/favorite_jobs" className="btn-showcase">
-            <FiBriefcase className="showcase-icons" /> <span className="ml-5">My Jobs</span>
+            <FiBriefcase className="showcase-icons" /> <span className="ml-5">Favorite Jobs</span>
           </Link>
         </div>
       </div>
