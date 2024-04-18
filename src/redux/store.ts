@@ -1,13 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
 
-import EmployerReducer from "./slices/employer.slice";
-import UserReducer from "./slices/user.slice";
+import employerReducer from "./slices/employer.slice";
+import userReducer from "./slices/user.slice";
 
-const store = configureStore({
-  reducer: {
-    Employer: EmployerReducer,
-    User:UserReducer,
-  },
+export type RootState = ReturnType<typeof rootReducer>;
+
+const rootReducer = combineReducers({
+  employer: employerReducer,
+  user: userReducer,
 });
 
-export default store;
+const store = configureStore({
+  reducer: rootReducer,
+});
+
+export { store };

@@ -1,24 +1,133 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import Navbar from "../navbar/Navbar";
 import JobFilter from "./JobFilter";
-import { ListAllJobs } from '../../../apis/auth';
+import { FaRegBookmark } from "react-icons/fa";
+import { IoLocationOutline } from "react-icons/io5";
+import { ListAllJobs, currentUser } from "../../../apis/auth";
+import { useNavigate } from "react-router-dom";
+import { MakeFavoriteJob, PreferredJobs } from "../../../apis/job";
+import { RootState } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { LoginInSuccess } from "../../../redux/slices/user.slice";
+import { message } from "antd";
+import { GetSpecificUser } from "../../../apis/user";
 
 interface Job {
+  _id: string;
+  company?: { companyname: string; logo: string };
   jobTitle: string;
   jobtype: string;
   minSalary: string;
   maxSalary: string;
   country: string;
   state: string;
-  companylogo :string;
+  companylogo: string;
 }
 
 const JobList: React.FC = () => {
+  const [preferedJobList, SetPreferedJobList] = useState<string | null>(null);
+  const [candidate, setCandidate] = useState<string>("");
+  const [cId, setCId] = useState<string>("");
+  const dispatch = useDispatch();
+  const User: any = useSelector((state: RootState) => {
+    return state.user.currentUser;
+  });
+  console.log(User);
+
+  useEffect(() => {
+    if (User) {
+      setCandidate(User.fullname);
+      setCId(User._id);
+    }
+  }, [candidate, User]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("Token");
+    console.log(token);
+
+    if (token && !candidate) {
+      const fetchUserData = async (token: string) => {
+        try {
+          const user = await currentUser(token);
+          dispatch(LoginInSuccess(user.data.currentUser));
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+
+      fetchUserData(token);
+    }
+  }, [candidate]);
+
+  console.log(candidate);
+
+  const navigate = useNavigate();
   const [searchApplied, setSearchApplied] = useState(false);
   const [searchTitle, setSearchTitle] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
   const [joblist, setJoblist] = useState<Job[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [showFilterModal, setShowFilterModal] = useState<boolean>(false);
+  const [jobDiffFilter, setJobDiffFilter] = useState<any>({});
+
+  // State variables to track selected options
+  const [selectedIndustry, setSelectedIndustry] = useState<string[]>([]);
+  const [selectedSalaryRange, setSelectedSalaryRange] = useState<string>("");
+  const [selectedSort, setSelectedSort] = useState<string>("");
+  const [selectedJobType, setSelectedJobType] = useState<string[]>([]);
+
+  const [arrayNavCount, setArrayNavCount] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleIndustryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSelectedIndustry((prevSelected) =>
+      prevSelected.includes(value)
+        ? prevSelected.filter((item) => item !== value)
+        : [...prevSelected, value]
+    );
+  };
+
+  const handleSalaryRangeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSelectedSalaryRange(event.target.value);
+  };
+
+  const handleSort = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedSort(event.target.value);
+  };
+
+  const handleJobTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSelectedJobType((prevSelected) =>
+      prevSelected.includes(value)
+        ? prevSelected.filter((item) => item !== value)
+        : [...prevSelected, value]
+    );
+  };
+
+  const handleFilters = () => {
+    console.log(selectedIndustry);
+    console.log(selectedSalaryRange);
+    console.log(selectedJobType);
+    console.log(selectedSort);
+
+    const queryParameters = {
+      selectedIndustries: selectedIndustry || [],
+      selectedSalaryRange: selectedSalaryRange,
+      selectedJobType: selectedJobType || [],
+      selectedSort: selectedSort,
+    };
+
+    setJobDiffFilter(queryParameters);
+    setShowFilterModal(false);
+  };
 
   const handleSearchTitle = (title: string) => {
     setSearchTitle(title);
@@ -31,26 +140,104 @@ const JobList: React.FC = () => {
   const handleApplyFilters = () => {
     let filtered = joblist;
     if (searchTitle) {
-      filtered = filtered.filter(job => job.jobTitle.toLowerCase().includes(searchTitle.toLowerCase()));
+      filtered = filtered.filter((job) =>
+        job.jobTitle.toLowerCase().includes(searchTitle.toLowerCase())
+      );
     }
     if (searchLocation) {
-      filtered = filtered.filter(job => job.country.toLowerCase().includes(searchLocation.toLowerCase()) || job.state.toLowerCase().includes(searchLocation.toLowerCase()));
+      filtered = filtered.filter(
+        (job) =>
+          job.country.toLowerCase().includes(searchLocation.toLowerCase()) ||
+          job.state.toLowerCase().includes(searchLocation.toLowerCase())
+      );
     }
     setFilteredJobs(filtered);
     setSearchApplied(true);
   };
 
+  console.log(currentPage);
+
+  useEffect(() => {
+    try {
+      const fetchUserAuthDetail = async () => {
+        if (User?._id) {
+          const respo = await GetSpecificUser(User._id);
+          console.log(respo.user.preferredJob);
+          SetPreferedJobList(respo.user.preferredJob);
+        }
+      };
+      fetchUserAuthDetail();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [User?._id]);
+
+  const HandlePreferredJobs = () => {
+    try {
+      const fetchPreferredJob = async () => {
+        if (preferedJobList !== null) {
+          const respo = await PreferredJobs(preferedJobList);
+          console.log(respo.preferrefJob);
+          setJoblist(respo.preferrefJob);
+          console.log(preferedJobList);
+        }
+      };
+      fetchPreferredJob();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await ListAllJobs();
-        setJoblist(res.data.jobs);
+        const res = await ListAllJobs(jobDiffFilter, currentPage);
+
+        console.log(res.jobs);
+        setArrayNavCount(res.current);
+        setJoblist(res.jobs);
+        setFilteredJobs(res.jobs);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [jobDiffFilter, currentPage]);
+
+  console.log(arrayNavCount);
+  const pageNumbers = Array.from({ length: arrayNavCount }, (_, i) => i + 1);
+
+  console.log(pageNumbers);
+
+  const handleClick = (job: any) => {
+    console.log(job);
+
+    setSelectedJob(job);
+    console.log(job._id);
+    navigate(`/find-job/job-details/${job._id}`);
+  };
+
+  console.log(candidate);
+
+  const HandleFaovriteJobs = async (id: string) => {
+    const jobInfo = {
+      JobId: id,
+    };
+
+    if (cId === undefined) {
+      return message.info("need to signIn First");
+    }
+
+    try {
+      const res = await MakeFavoriteJob(cId, jobInfo);
+      console.log(res);
+      message.info(res.message);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  console.log(selectedJob);
 
   return (
     <>
@@ -61,45 +248,329 @@ const JobList: React.FC = () => {
         </div>
         <div className="job-show-right">Home/Find Job</div>
       </div>
-      <div className='job-search-apply'>
-        <JobFilter onSearchTitle={handleSearchTitle} onSearchLocation={handleSearchLocation} />
-        <button onClick={handleApplyFilters}>Apply</button>
+      <div className="job-search-apply">
+        <JobFilter
+          onSearchTitle={handleSearchTitle}
+          onSearchLocation={handleSearchLocation}
+        />
+        <div>
+          <button className="mr-5" onClick={() => setShowFilterModal(true)}>
+            Filter
+          </button>
+          <button onClick={handleApplyFilters}>Apply</button>
+        </div>
+      </div>
+      <div className="flex justify-evenly">
+        <div>
+          <p onClick={()=>{
+            location.reload();
+          }} className="px-40 py-5 hover:border-b-2 hover:border-blue-300">
+            Recent Jobs
+          </p>
+        </div>
+        <div>
+          <p
+            onClick={HandlePreferredJobs}
+            className="px-40 py-5 hover:border-b-2 hover:border-blue-300 cursor-pointer"
+          >
+            Prefered Jobs
+          </p>
+        </div>
       </div>
       <div className="job-list">
-        {searchApplied ? filteredJobs.map((job, index) => (
-          <div className="job-box" key={index}>
-            <h3>{job.jobTitle}</h3>
-            <div className="job-box-type-amount">
-              <p>Job Type: {job.jobtype}</p>
-              <p>
-                Salary: ${job.minSalary} - ${job.maxSalary}
-              </p>
-            </div>
-            <div className="job-box-logo-loca">
-              {/* <img className="w-10" src={job.company_logo} alt="Company Logo" /> */}
-              <p>
-                {job.state}, {job.country}
-              </p>
-            </div>
-          </div>
-        )) : joblist.map((job, index) => (
-          <div className="job-box" key={index}>
-            <h3>{job.jobTitle}</h3>
-            <div className="job-box-type-amount">
-              <p>Job Type: {job.jobtype}</p>
-              <p>
-                Salary: ${job.minSalary} - ${job.maxSalary}
-              </p>
-            </div>
-            <div className="job-box-logo-loca">
-              <img className="w-10" src={job.companylogo} alt="Company Logo" />
-              <p>
-                {job.state}, {job.country}
-              </p>
-            </div>
-          </div>
-        ))}
+        {searchApplied
+          ? filteredJobs.map((job, index) => (
+              <div
+                className="job-box flex items-end"
+                style={{ justifyContent: "space-between" }}
+                key={index}
+              >
+                <div
+                  className="cursor-pointer"
+                  onClick={() => handleClick(job)}
+                >
+                  <h3 className="capitalize">{job.jobTitle}</h3>
+                  <div className="job-box-type-amount">
+                    <p className="uppercase">{job.jobtype}</p>
+                    <p className="salary-nego">
+                      Salary: ${job.minSalary} - ${job.maxSalary}
+                    </p>
+                  </div>
+                  <div className="job-box-logo-loca">
+                    <img
+                      className="img-size-data"
+                      src={job.company ? job.company.logo : ""}
+                      alt="Company Logo"
+                    />
+                    <p>
+                      {job.company ? (
+                        <p className="company-bold">
+                          {job.company.companyname}
+                        </p>
+                      ) : (
+                        <p>company</p>
+                      )}
+                      <p className="location-change flex justify-center items-center gap-1">
+                        {" "}
+                        <IoLocationOutline /> {job.state}, {job.country}
+                      </p>
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <span>
+                    <FaRegBookmark
+                      className="cursor-pointer"
+                      onClick={() => {
+                        HandleFaovriteJobs(job._id);
+                      }}
+                    />
+                  </span>
+                </div>
+              </div>
+            ))
+          : joblist.map((job, index) => (
+              <div
+                className="job-box flex items-end"
+                style={{ justifyContent: "space-between" }}
+                key={index}
+              >
+                <div
+                  className="cursor-pointer"
+                  onClick={() => handleClick(job)}
+                >
+                  <h3 className="capitalize">{job.jobTitle}</h3>
+                  <div className="job-box-type-amount">
+                    <p className="uppercase">{job.jobtype}</p>
+                    <p className="salary-nego">
+                      Salary: ${job.minSalary} - ${job.maxSalary}
+                    </p>
+                  </div>
+                  <div className="job-box-logo-loca">
+                    <img
+                      className="img-size-data"
+                      src={job.company ? job.company.logo : ""}
+                      alt="Company Logo"
+                    />
+                    <p>
+                      {job.company ? (
+                        <p className="company-bold">
+                          {job.company.companyname}
+                        </p>
+                      ) : (
+                        <p className="company-bold">company</p>
+                      )}
+                      <p className="location-change flex justify-center items-center gap-1">
+                        {" "}
+                        <IoLocationOutline /> {job.state}, {job.country}
+                      </p>
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <span>
+                    <FaRegBookmark
+                      className="cursor-pointer"
+                      onClick={() => {
+                        HandleFaovriteJobs(job._id);
+                      }}
+                    />
+                  </span>
+                </div>
+              </div>
+            ))}
       </div>
+      <div className="flex items-center" style={{ justifyContent: "center" }}>
+        <nav aria-label="Page navigation example">
+          <ul className="flex items-center -space-x-px h-8 text-sm">
+            {currentPage > 1 && (
+              <li>
+                <button
+                  className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
+                  <span className="sr-only">Previous</span>
+                  <svg
+                    className="w-2.5 h-2.5 rtl:rotate-180"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 1 1 5l4 4"
+                    />
+                  </svg>
+                </button>
+              </li>
+            )}
+            {pageNumbers.map((pageNumber) => (
+              <li key={pageNumber}>
+                <button
+                  className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border ${
+                    pageNumber === currentPage
+                      ? "border-gray-800 text-gray-800" // Highlight current page
+                      : "border-gray-300"
+                  } hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                  onClick={() => handlePageChange(pageNumber)}
+                >
+                  {pageNumber}
+                </button>
+              </li>
+            ))}
+            {currentPage < 2 && (
+              <li>
+                <button
+                  className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  <span className="sr-only">Next</span>
+                  <svg
+                    className="w-2.5 h-2.5 rtl:rotate-180"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m1 9 4-4-4-4"
+                    />
+                  </svg>
+                </button>
+              </li>
+            )}
+          </ul>
+        </nav>
+      </div>
+      {showFilterModal && (
+        <div className="filter-modal">
+          <div className="filter-modal-content">
+            <h2>Filter Jobs</h2>
+            {/* Industry checkboxes */}
+            <div>
+              <h3>Industry</h3>
+              <label>
+                <input
+                  type="checkbox"
+                  name="industry"
+                  value="intern"
+                  onChange={handleIndustryChange}
+                  checked={selectedIndustry.includes("intern")}
+                />
+                intern
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="industry"
+                  value="Finance"
+                  onChange={handleIndustryChange}
+                  checked={selectedIndustry.includes("Finance")}
+                />
+                Finance
+              </label>
+            </div>
+            {/* Salary range radio buttons */}
+            <div>
+              <h3>Salary Range</h3>
+              <label>
+                <input
+                  type="radio"
+                  name="salary"
+                  value="0-50000"
+                  onChange={handleSalaryRangeChange}
+                  checked={selectedSalaryRange === "0-50000"}
+                />
+                Less than $50,000
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="salary"
+                  value="50000-100000"
+                  onChange={handleSalaryRangeChange}
+                  checked={selectedSalaryRange === "50000-100000"}
+                />
+                $50,000 - $100,000
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="salary"
+                  value="100000+"
+                  onChange={handleSalaryRangeChange}
+                  checked={selectedSalaryRange === "100000+"}
+                />
+                Greater than $100,000
+              </label>
+            </div>
+            {/* Job type checkboxes */}
+            <div>
+              <h3>Job Type</h3>
+              <label>
+                <input
+                  type="checkbox"
+                  name="jobType"
+                  value="Full Time"
+                  onChange={handleJobTypeChange}
+                  checked={selectedJobType.includes("Full Time")}
+                />
+                Full Time
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="jobType"
+                  value="Part Time"
+                  onChange={handleJobTypeChange}
+                  checked={selectedJobType.includes("Part Time")}
+                />
+                Part Time
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="jobType"
+                  value="Remote"
+                  onChange={handleJobTypeChange}
+                  checked={selectedJobType.includes("Remote")}
+                />
+                Remote
+              </label>
+            </div>
+            {/* Job sorting */}
+            <div>
+              <h3>Job Sort by</h3>
+              <label>
+                <input
+                  type="radio"
+                  name="sort"
+                  value="asc"
+                  onChange={handleSort}
+                  checked={selectedSort === "asc"}
+                />
+                Most Recent Jobs
+              </label>
+            </div>
+            <div className="flex items-center content-between">
+              <button onClick={() => setShowFilterModal(false)}>
+                Clear Filters
+              </button>
+              <button className="ml-4" onClick={handleFilters}>
+                Apply Filters
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

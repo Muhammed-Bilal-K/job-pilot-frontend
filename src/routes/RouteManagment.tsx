@@ -11,19 +11,28 @@ import UserRoute from "./UserRoute";
 import AdminLogin from "../components/adminComponents/Login";
 import Joblist from "../components/userComponents/Joblist/Joblist";
 import PrivateRouteAuth from "./ProtectRoute/PrivateComAuth";
+import { JobDetails } from "../components/userComponents/jobdetails/JobDetails";
+import PrivateUserAuth from "./ProtectRoute/PrivateUserAuth";
+import Success from "../pages/success";
+import Messanger from "../pages/messenger/Messanger";
+import LobbyScreen from "../pages/meeting/Lobby";
+import RoomPage from "../pages/meeting/Room";
 const RouteManagment: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route element={<PrivateRouteAuth  />}>
+        <Route element={<PrivateUserAuth />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/forgetpass" element={<ForgetPass />} />
           <Route path="/verification" element={<Verification />} />
           <Route path="/forgetform" element={<Forgetform />} />
         </Route>
-        <Route path="/find-job" element={<Joblist/>} />
-        <Route path="/admin/login" element={<AdminLogin/>} />
+        <Route path="/find-job" element={<Joblist />} />
+        <Route path="/find-job/job-details/:id" element={<JobDetails />} />
+        <Route element={<PrivateRouteAuth />}>
+          <Route path="/admin/login" element={<AdminLogin />} />
+        </Route>
         <>
           <Route path="/candidate/*" element={<UserRoute />} />
         </>
@@ -32,6 +41,16 @@ const RouteManagment: React.FC = () => {
         </>
         <>
           <Route path="/admin/*" element={<AdminRoute />} />
+        </>
+        <>
+          <Route path="/success" element={<Success />} />
+        </>
+        <>
+          <Route path="/message/:id" element={<Messanger />} />
+        </>
+        <>
+          <Route path="/lobby" element={<LobbyScreen />} />
+          <Route path="/room/:roomId" element={<RoomPage />} />
         </>
       </Routes>
     </>

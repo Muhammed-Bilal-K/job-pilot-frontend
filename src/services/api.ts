@@ -1,18 +1,22 @@
 import axios from "axios";
 
-const Api = axios.create({
-    baseURL: 'http://localhost:3000'
-});
+const Api = axios.create({ baseURL: "http://localhost:3000" , timeout : 10000}); //auth
 
-const Api2 = axios.create({
-    baseURL : 'http://localhost:3001'
-})
+// Api.interceptors.request.use(
+//   function (config) {
+//     const token = localStorage.getItem("token");
+//     config.headers.Authorization = token;
+//     return config;
+//   },
+//   function (error) {
+//     return Promise.reject(error);
+//   }
+// );
 
-const Api3 = axios.create({
-    baseURL : 'http://localhost:3002'
-})
 
-export {Api , Api2 , Api3}
+const Api2 = axios.create({ baseURL: "http://localhost:3001" }); //employer
+const Api3 = axios.create({ baseURL: "http://localhost:3002" }); //job
+const Api4 = axios.create({ baseURL: "http://localhost:3004" }); //chat
+const Api5 = axios.create({ baseURL: "http://localhost:3003" }); //user
 
-
-//time out, axios interceptor, cancel tokens. 
+export { Api, Api2, Api3 , Api4 , Api5};

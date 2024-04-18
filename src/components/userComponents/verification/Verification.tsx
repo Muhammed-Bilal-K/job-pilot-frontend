@@ -14,7 +14,7 @@ const Verification: React.FC = () => {
     const email = location.state.email;
     const [otp, setOtp] = useState('');
     const [showResend, setShowResend] = useState(false);
-    const [countdown, setCountdown] = useState(30);
+    const [countdown, setCountdown] = useState(60);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -54,6 +54,7 @@ const Verification: React.FC = () => {
         const res =await activeUser(newUserVerification);
         console.log(res.data);
         if (res.data.message == 'Account activated successfully') {
+          localStorage.removeItem('VerifyToken')
           message.success("Account activated successfully");
           setTimeout(()=>{
             navigate('/login');
@@ -66,7 +67,7 @@ const Verification: React.FC = () => {
 
     const handleResend = async () => {
       setShowResend(true);
-      setCountdown(30); 
+      setCountdown(60); 
       const res = await resendUserOtp(email);
       if(res.data.message == "Resend Otp successfully sent to your email address."){
         message.success(res.data.message);

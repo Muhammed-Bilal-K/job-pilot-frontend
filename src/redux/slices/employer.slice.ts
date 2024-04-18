@@ -1,26 +1,58 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-    currentEmployer: null,
+interface EmployerState {
+  currentEmployer: any; 
+}
+
+const initialState: EmployerState = {
+  currentEmployer: null,
 };
 
 const employerSlice = createSlice({
-    name: "employer",
-    initialState,
-    reducers: {
-      signInSuccess: (state, action) => {
-        state.currentEmployer = action.payload;
-      },
-      updateUserSuccess: (state, action) => {
-        state.currentEmployer = action.payload;
-      },
-      signOut: (state) => {
-        state.currentEmployer = null;
-      },
+  name: "employer",
+  initialState,
+  reducers: {
+    signInSuccess: (state, action: PayloadAction<any>) => {
+      state.currentEmployer = action.payload;
     },
-  });
+    updateImage: (state, action: PayloadAction<any>) => {
+      state.currentEmployer = action.payload;
+    },
+  },
+});
+
+export const { signInSuccess , updateImage } = employerSlice.actions;
+export default employerSlice.reducer;
 
 
-  export const { signInSuccess, updateUserSuccess , signOut } = employerSlice.actions;
+// import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-  export default employerSlice.reducer;
+// interface EmployerState {
+//   currentEmployer: any;
+// }
+
+// const initialState: EmployerState = {
+//   currentEmployer: null,
+// };
+
+// const employerSlice = createSlice({
+//   name: "employer",
+//   initialState,
+//   reducers: {
+//     signInSuccess: (state, action: PayloadAction<any>) => {
+//       state.currentEmployer = {
+//         ...state.currentEmployer,
+//         ...action.payload,
+//       };
+//     },
+//     updateImage: (state, action: PayloadAction<any>) => {
+//       state.currentEmployer = {
+//         ...state.currentEmployer,
+//         ...action.payload,
+//       };
+//     },
+//   },
+// });
+
+// export const { signInSuccess, updateImage } = employerSlice.actions;
+// export default employerSlice.reducer;

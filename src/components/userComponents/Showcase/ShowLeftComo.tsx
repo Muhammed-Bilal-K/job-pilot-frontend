@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { RiStackLine } from 'react-icons/ri';
 import { FiPlusCircle, FiBriefcase } from 'react-icons/fi';
+import { IoMdSettings } from 'react-icons/io';
 
 export const ShowLeftComponent: React.FC = () => {
   return (
@@ -19,6 +20,9 @@ export const ShowLeftComponent: React.FC = () => {
           </Link>
           <Link to="/candidate/user-dash/favorite_jobs" className="btn-showcase">
             <FiBriefcase className="showcase-icons" /> <span className="ml-5">Favorite Jobs</span>
+          </Link>
+          <Link to="/candidate/user-dash/settings" className="btn-showcase">
+            <IoMdSettings className="showcase-icons" /> <span className="ml-5">Settings</span>
           </Link>
         </div>
       </div>

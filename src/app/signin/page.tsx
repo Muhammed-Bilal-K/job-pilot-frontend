@@ -5,19 +5,31 @@ import candidate from "../../assets/image 6.png";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import employer from "../../assets/image 7.png";
-import { register } from '../../apis/auth';
+import { SocialAuth, register } from "../../apis/auth";
+import { auth, provider } from "../utilities/firebase";
+import { signInWithPopup } from "firebase/auth";
+import { useDispatch } from 'react-redux';
+import { signInSuccess } from "../../redux/slices/employer.slice";
 
 interface FormValues {
-  fullname:string | undefined;
+  fullname: string | undefined;
   username: string | undefined;
   email: string | undefined;
   password: string | undefined;
   confirmpassword?: string | undefined;
-  role?: string | undefined; 
+  role?: string | undefined;
+}
+
+interface ISocialAuth {
+  fullname: string | null;
+  username: string | null;
+  email: string | null;
+  role: string | undefined;
 }
 
 const Signin: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch =  useDispatch();
   const [fullName, setFullName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -62,40 +74,76 @@ const Signin: React.FC = () => {
         return;
       }
 
-       
       if (password === confirmPassword && email && username) {
         message.open({
-          type: 'loading',
-          content: 'Action in progress..',
+          type: "loading",
+          content: "Action in progress..",
           duration: 2,
         });
         const newUserRegi: FormValues = {
-          fullname : fullName,
+          fullname: fullName,
           username: username,
           email: email,
           password: password,
-          confirmpassword:confirmPassword,
+          confirmpassword: confirmPassword,
           role: selectedType,
         };
-        const res =await register(newUserRegi);
+        const res = await register(newUserRegi);
         console.log(res.data);
-        
-        if(res.data.message == "Otp successfully sent to your email address."){
+
+        if (
+          res.data.message == "Otp successfully sent to your email address."
+        ) {
           message.success(res.data.message);
           localStorage.setItem("VerifyToken", res.data.activationToken!);
-          setTimeout(()=>{
-            navigate('/verification', { state: { email: email } });
-          },1000);
+          setTimeout(() => {
+            navigate("/verification", { state: { email: email } });
+          }, 1000);
         }
       } else {
         message.info("Password doesn't Match");
       }
-    } catch (error : any) {
+    } catch (error: any) {
       message.error(error.response.data.message);
     }
   };
 
-  const handleGoogleSignUp = () => {};
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log(user);
+      
+      const userRole = prompt("Choose your role (employer/candidate)");
+      if (userRole && (userRole === "employer" || userRole === "candidate")) {
+        const socialAuth: ISocialAuth = {
+          fullname: user.displayName,
+          username: user.displayName?.split(" ").join("").toLowerCase() + "01",
+          email: user.email,
+          role: userRole,
+        };
+        const res = await SocialAuth(socialAuth);
+        console.log(res);
+        if (res.data.message == "signed successfully") {
+          message.success(res.data.message);
+          setTimeout(() => {
+            if (res.data.user.role === "employer") {
+              dispatch(signInSuccess(res.data.user));
+              localStorage.setItem("Emplo", res.data.token);
+              navigate("/employer/emplo-dash");
+            } else {
+              localStorage.setItem("Token", res.data.token);
+              navigate("/");
+            }
+          }, 1000);
+        }
+      } else {
+        console.error("Invalid role selected.");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -136,8 +184,8 @@ const Signin: React.FC = () => {
                 </span>
               </label>
             </div>
-          </div> 
-          
+          </div>
+
           <div className="all-aligh-set">
             <div className="flex justify-between">
               <div>
@@ -199,7 +247,7 @@ const Signin: React.FC = () => {
           <div className="text-center">
             <span>OR</span>
           </div>
-          <button onClick={handleGoogleSignUp} className="google-signup-button">
+          <button onClick={handleGoogleSignIn} className="google-signup-button">
             Sign Up with Google
           </button>
         </div>

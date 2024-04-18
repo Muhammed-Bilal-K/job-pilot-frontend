@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import Dashboard from "../Showcase/Dashboard";
 import Candidate from "../Showcase/Candidate";
 import Bills from "../Showcase/Bills";
+import Employers from "../Showcase/Employers";
 
 const Home: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const Home: React.FC = () => {
       <Routes>
         <Route path="/admin-dash" element={<Dashboard />} />
         <Route path="/admin-dash/candidate_list" element={<Candidate />} />
+        <Route path="/admin-dash/employer_list" element={<Employers />} />
         <Route path="/admin-dash/bills_details" element={<Bills />} />
       </Routes>
     </>

@@ -2,7 +2,18 @@ import React, { useEffect, useState } from "react";
 import { ShowLeftComponent } from "./ShowLeftComo";
 import subImage from "../../../assets/subs plan.png";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
-import { CreateJobByCompany, GetAllPlansDetails, makePayment } from "../../../apis/auth";
+import {
+  CreateJobByCompany,
+  CurrentAuthInfo,
+  GetAllPlansDetails,
+  GetCompanyInfo,
+  currentUser,
+  makePayment,
+} from "../../../apis/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { message } from "antd";
+import { RootState } from '../../../redux/store';
+import { signInSuccess } from "../../../redux/slices/employer.slice";
 
 interface Plan {
   _id: string;
@@ -13,10 +24,69 @@ interface Plan {
   features: string[];
 }
 
+interface CompanyInfo {
+  _id: string;
+  companyname: string;
+}
+
+interface CompanyAuthInfo {
+  _id: string;
+  name: string;
+  stripeCustomerId: string;
+}
+
+interface FormData {
+  company?: string;
+  jobTitle: string;
+  tags: string;
+  jobRole: string;
+  minSalary: string;
+  maxSalary: string;
+  education: string;
+  experience: string;
+  jobtype: string;
+  expiredate: string;
+  joblevel: string;
+  applicationNo: string;
+  country: string;
+  state: string;
+  jobDescription: string;
+}
+
+const initialErrors = {
+  jobTitle: "",
+  tags: "",
+  jobRole: "",
+  minSalary: "",
+  maxSalary: "",
+  education: "",
+  experience: "",
+  jobtype: "",
+  expiredate: "",
+  joblevel: "",
+  applicationNo: "",
+  country: "",
+  state: "",
+  jobDescription: "",
+};
+
 const Postjob: React.FC = () => {
+  const [employer, setEmployer] = useState("");
+  const dispatch =  useDispatch();
+  const Employer : any = useSelector((state : RootState) => {
+    return state.employer.currentEmployer;
+  });
+  console.log(Employer);
+  
+  
+
   const [planDetail, setPlanDetail] = useState<Plan[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(true);
-  const [formData, setFormData] = useState({
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [comp, setComp] = useState<CompanyInfo[]>([]);
+  const [compAuth, SetcompAuth] = useState<CompanyAuthInfo[]>([]);
+  const [errors, setErrors] = useState<any>(initialErrors);
+  const [formData, setFormData] = useState<FormData>({
+    company: "",
     jobTitle: "",
     tags: "",
     jobRole: "",
@@ -34,9 +104,32 @@ const Postjob: React.FC = () => {
   });
 
   useEffect(() => {
+    if (Employer) {
+      setEmployer(Employer.fullname);
+    }
+  }, [Employer]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('Emplo');
+    if (token && !employer) {
+      const fetchUserData = async (token: string) => {
+        try {
+          const user = await currentUser(token);
+          dispatch(signInSuccess(user.data.currentUser));
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+
+      fetchUserData(token);
+    }
+  }, [employer]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await GetAllPlansDetails();
+        console.log(res.data.planDetail);
         setPlanDetail(res.data.planDetail);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -45,13 +138,72 @@ const Postjob: React.FC = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await CurrentAuthInfo();
+        console.log(res.data.AuthInfo);
+        SetcompAuth(res.data.AuthInfo);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await GetCompanyInfo();
+        console.log(res.data.comInfo);
+        setComp(res.data.comInfo);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  console.log(compAuth);
+  
+
+  useEffect(() => {
+    const cmp = localStorage.getItem("Company");
+    console.log(cmp);
+    
+    const authId = compAuth.find((v) => v.name === cmp);
+    console.log(authId);
+    if (authId && authId.stripeCustomerId != "None") {
+      setIsModalOpen(true);
+    }
+    if (authId) {
+      localStorage.setItem("companyAuhtId", authId._id);
+    }
+  }, [compAuth]);
+
+  useEffect(() => {
+    const cmp = localStorage.getItem("Company");
+    const referenceId = comp.find((value) => value.companyname === cmp);
+    console.log(referenceId);
+
+    if (referenceId) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        company: referenceId._id,
+      }));
+    }
+  }, [comp]);
+
   const HandleSubcription = async (planId: string) => {
     const plan = planDetail.find((id) => id._id === planId);
+    const companyId = localStorage.getItem("companyAuhtId");
     const allData = {
       plan: plan,
-      companyId: "65fafc9fde1eca9895b9d8d9",
+      companyId: companyId,
       planAmount: plan?.amount,
     };
+    console.log(allData);
+    
     const res = await makePayment(allData);
     console.log(res.data.url);
     if (res.data.url) {
@@ -63,19 +215,194 @@ const Postjob: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    let error = "";
+
+    switch (name) {
+      case "jobTitle":
+        if (value.trim() === "") {
+          error = "Job title is required.";
+        }
+        break;
+      case "tags":
+        if (value.trim() === "") {
+          error = "Tags are required.";
+        }
+        break;
+      case "jobRole":
+        if (value.trim() === "") {
+          error = "Job role is required.";
+        }
+        break;
+      case "minSalary":
+        if (value.trim() === "") {
+          error = "Minimum salary is required.";
+        }
+        break;
+      case "maxSalary":
+        if (value.trim() === "") {
+          error = "Maximum salary is required.";
+        }
+        break;
+      case "education":
+        if (value.trim() === "") {
+          error = "Education field is required.";
+        }
+        break;
+      case "experience":
+        if (value.trim() === "") {
+          error = "Experience field is required.";
+        }
+        break;
+      case "jobtype":
+        if (value.trim() === "") {
+          error = "Job type is required.";
+        }
+        break;
+      case "expiredate":
+        const currentDate = new Date();
+        const selectedDate = new Date(value);
+        if (selectedDate < currentDate) {
+          error = "Expire date must be a future date.";
+          return;
+        }
+        break;
+      case "joblevel":
+        if (value.trim() === "") {
+          error = "Job level is required.";
+        }
+        break;
+      case "applicationNo":
+        if (value.trim() === "") {
+          error = "Application number is required.";
+        }
+        break;
+      case "country":
+        if (value.trim() === "") {
+          error = "Country is required.";
+        }
+        break;
+      case "state":
+        if (value.trim() === "") {
+          error = "State is required.";
+        }
+        break;
+      case "jobDescription":
+        if (value.trim() === "") {
+          error = "Job description is required.";
+        }
+        break;
+      default:
+        break;
+    }
+
     setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: error });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(formData);
     try {
-      const res = await CreateJobByCompany(formData);
-    console.log(res.data);
+      e.preventDefault();
+
+      const formErrors: Record<string, string> = {};
+      Object.keys(formData).forEach((key) => {
+        switch (key) {
+          case "jobTitle":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Job title is required.";
+            }
+            break;
+          case "tags":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Tags are required.";
+            }
+            break;
+          case "jobRole":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Job role is required.";
+            }
+            break;
+          case "minSalary":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Minimum salary must be a number.";
+            }
+            break;
+          case "maxSalary":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Maximum salary must be a number.";
+            }
+            break;
+          case "education":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Education field is required.";
+            }
+            break;
+          case "experience":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Experience field is required.";
+            }
+            break;
+          case "jobtype":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Job type is required.";
+            }
+            break;
+          case "expiredate":
+            const currentDate = new Date();
+            const selectedDate = new Date(formData[key]);
+            if (selectedDate < currentDate) {
+              formErrors[key] = "Expire date must be a future date.";
+            }
+            break;
+          case "joblevel":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Job level is required.";
+            }
+            break;
+          case "applicationNo":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Application number is required.";
+            }
+            break;
+          case "country":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Country is required.";
+            }
+            break;
+          case "state":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "State is required.";
+            }
+            break;
+          case "jobDescription":
+            if (formData[key].trim() === "") {
+              formErrors[key] = "Job description is required.";
+            }
+            break;
+          default:
+            break;
+        }
+      });
+
+      if (Object.keys(formErrors).length > 0) {
+        setErrors(formErrors);
+        return;
+      }
+      console.log(formData);
+      try {
+        const res = await CreateJobByCompany(formData);
+        console.log(res.data);
+        if (res.data.message == "job created successfully.") {
+          message.success(res.data.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error occurred:", error);
     }
-    
   };
 
   return (
@@ -108,6 +435,9 @@ const Postjob: React.FC = () => {
                       placeholder="Type job title"
                       required
                     />
+                    {errors.jobTitle && (
+                      <div className="error">{errors.jobTitle}</div>
+                    )}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label
@@ -126,6 +456,7 @@ const Postjob: React.FC = () => {
                       placeholder="Type tags"
                       required
                     />
+                    {errors.tags && <div className="error">{errors.tags}</div>}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label
@@ -144,6 +475,9 @@ const Postjob: React.FC = () => {
                       placeholder="Type job role"
                       required
                     />
+                    {errors.jobRole && (
+                      <div className="error">{errors.jobRole}</div>
+                    )}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label
@@ -162,6 +496,9 @@ const Postjob: React.FC = () => {
                       placeholder="Enter minimum salary"
                       required
                     />
+                    {errors.minSalary && (
+                      <div className="error">{errors.minSalary}</div>
+                    )}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label
@@ -180,6 +517,9 @@ const Postjob: React.FC = () => {
                       placeholder="Enter maximum salary"
                       required
                     />
+                    {errors.maxSalary && (
+                      <div className="error">{errors.maxSalary}</div>
+                    )}
                   </div>
                 </div>
                 <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-3">
@@ -200,6 +540,9 @@ const Postjob: React.FC = () => {
                       placeholder="Enter Job Type"
                       required
                     />
+                    {errors.education && (
+                      <div className="error">{errors.education}</div>
+                    )}
                   </div>
                   <div className="col-span-1">
                     <label
@@ -218,6 +561,9 @@ const Postjob: React.FC = () => {
                       placeholder="Enter Job Type"
                       required
                     />
+                    {errors.experience && (
+                      <div className="error">{errors.experience}</div>
+                    )}
                   </div>
                   <div className="col-span-1">
                     <label
@@ -236,6 +582,9 @@ const Postjob: React.FC = () => {
                       placeholder="Enter Job Type"
                       required
                     />
+                    {errors.jobtype && (
+                      <div className="error">{errors.jobtype}</div>
+                    )}
                   </div>
                   <div className="col-span-1">
                     <label
@@ -254,6 +603,9 @@ const Postjob: React.FC = () => {
                       placeholder="dd/mm/yyyy"
                       required
                     />
+                    {errors.expiredate && (
+                      <div className="error">{errors.expiredate}</div>
+                    )}
                   </div>
                   <div className="col-span-1">
                     <label
@@ -272,6 +624,9 @@ const Postjob: React.FC = () => {
                       placeholder="Enter experience requirements"
                       required
                     />
+                    {errors.joblevel && (
+                      <div className="error">{errors.joblevel}</div>
+                    )}
                   </div>
                   <div className="col-span-1">
                     <label
@@ -290,6 +645,9 @@ const Postjob: React.FC = () => {
                       placeholder="Enter experience requirements"
                       required
                     />
+                    {errors.applicationNo && (
+                      <div className="error">{errors.applicationNo}</div>
+                    )}
                   </div>
                 </div>
 
@@ -311,6 +669,9 @@ const Postjob: React.FC = () => {
                       placeholder="Type job title"
                       required
                     />
+                    {errors.country && (
+                      <div className="error">{errors.country}</div>
+                    )}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label
@@ -329,6 +690,9 @@ const Postjob: React.FC = () => {
                       placeholder="Type tags"
                       required
                     />
+                    {errors.state && (
+                      <div className="error">{errors.state}</div>
+                    )}
                   </div>
                   <div className="col-span-2">
                     <label
@@ -345,6 +709,9 @@ const Postjob: React.FC = () => {
                       value={formData.jobDescription}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-white dark:border-gray-500 dark:placeholder-gray-400 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     ></textarea>
+                    {errors.jobDescription && (
+                      <div className="error">{errors.jobDescription}</div>
+                    )}
                   </div>
                 </div>
                 <button

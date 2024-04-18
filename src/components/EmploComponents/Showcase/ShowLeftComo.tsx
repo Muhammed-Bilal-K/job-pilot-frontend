@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { RiStackLine } from 'react-icons/ri';
 import { FiPlusCircle, FiBriefcase } from 'react-icons/fi';
-import { FaRegBookmark, FaMoneyBillAlt } from 'react-icons/fa';
+import { FaMoneyBillAlt } from 'react-icons/fa';
+import { IoMdSettings } from "react-icons/io";
 
 export const ShowLeftComponent: React.FC = () => {
   return (
@@ -21,11 +22,11 @@ export const ShowLeftComponent: React.FC = () => {
           <Link to="/employer/emplo-dash/my_jobs" className="btn-showcase">
             <FiBriefcase className="showcase-icons" /> <span className="ml-5">My Jobs</span>
           </Link>
-          <Link to="/employer/emplo-dash/favorite_candidates" className="btn-showcase">
-            <FaRegBookmark className="showcase-icons" /> <span className="ml-5">Favorite Candidates</span>
-          </Link>
           <Link to="/employer/emplo-dash/bills_details" className="btn-showcase">
             <FaMoneyBillAlt className="showcase-icons" /> <span className="ml-5">Bills & Details</span>
+          </Link>
+          <Link to="/employer/emplo-dash/settings" className="btn-showcase">
+            <IoMdSettings className="showcase-icons" /> <span className="ml-5">Settings</span>
           </Link>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../../apis/auth';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../../redux/slices/employer.slice';
+import { LoginInSuccess } from '../../redux/slices/user.slice';
 
 interface InputValues {
   email: string | undefined;
@@ -44,6 +45,7 @@ const Login : React.FC = () => {
             navigate('/employer/emplo-dash');
           },1000);
         }else{
+          dispatch(LoginInSuccess(res.data.user))
           localStorage.setItem("Token", res.data.token);
           setTimeout(()=>{
             navigate('/');

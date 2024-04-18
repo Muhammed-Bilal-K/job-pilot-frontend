@@ -6,7 +6,7 @@ export default function UserRoute() {
   return (
     <div>
       <Routes>
-        <Route element={<PrivateRoute role="candidate" redirect={"/"} />}>
+        <Route element={<PrivateRoute role="candidate" redirect="/" />}>
           <Route path="/*" element={<Home />} />
         </Route>
       </Routes>

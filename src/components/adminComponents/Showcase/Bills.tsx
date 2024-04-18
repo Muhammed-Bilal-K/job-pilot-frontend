@@ -1,29 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ShowLeftComponent } from "./ShowLeftComo";
 import { FiPlusCircle } from "react-icons/fi";
-import { PlanCreatedByAdmin } from "../../../apis/auth";
+import { GetAllPlansDetails, PlanCreatedByAdmin, PlanDeletedByAdmin, UpdatePlan } from "../../../apis/auth";
+import Swal from 'sweetalert2';
 
-const billandplans = [
-  {
-    planName: "Basic Plan",
-    amount: "$1500",
-    desc: "Basic plan description nsdlfndsfnsdf dkfmsdnfsfdsofsn pasomddasndsdfns pdsnfndn",
-    date: "2024-03-22",
-    smallDesc: "Basic",
-  },
-  {
-    planName: "Standard Plan",
-    amount: "$20",
-    desc: "Standard plan description",
-    date: "2024-03-23",
-    smallDesc: "Standard",
-  },
-  {
-    planName: "Premium Plan",
-    amount: "$30",
-    desc: "Premium plan description",
-  },
-];
+interface PlanDetail {
+  _id: string;
+  name: string;
+  amount: string;
+  description: string;
+  features: string[];
+}
 
 interface PlanInputValues {
   name: string;
@@ -31,16 +18,45 @@ interface PlanInputValues {
   amount: string;
   features: string[];
 }
-
 const Bills: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
   const [planName, setPlanName] = useState("");
   const [planPrice, setPlanPrice] = useState("");
   const [planFeatures, setPlanFeatures] = useState([""]);
   const [planDescription, setPlanDescription] = useState("");
+  const [editedPlanId, setEditedPlanId] = useState<string | null>(null);
+  const [bills,setBills] = useState<PlanDetail[]>([]);
 
-  const toggleModal = () => {
+  useEffect(()=>{
+    const fetchData = async () => {
+      try {
+        const res = await GetAllPlansDetails();
+        console.log(res.data.planDetail);
+        setBills(res.data.planDetail);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  },[])
+
+  const toggleModal = (mode: 'add' | 'edit', plan?: PlanDetail) => {
     setIsModalOpen(!isModalOpen);
+    setModalMode(mode);
+    if (mode === 'edit' && plan) { 
+      setPlanName(plan.name);
+      setPlanPrice(plan.amount);
+      setPlanFeatures(plan.features);
+      setPlanDescription(plan.description);
+      setEditedPlanId(plan._id);
+    } else {
+      setPlanName("");
+      setPlanPrice("");
+      setPlanFeatures([""]);
+      setPlanDescription("");
+      setEditedPlanId(null);
+    }
   };
 
   const handlePlanFeaturesChange = (index: number, value: string) => {
@@ -59,17 +75,56 @@ const Bills: React.FC = () => {
     setPlanFeatures(updatedFeatures);
   };
 
+  const HandleDeleteSub = async (id : string) => {
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then( async (result) => {
+      if (result.isConfirmed) {
+        const adminToken = localStorage.getItem('AdminToken');
+        console.log(adminToken);
+        const res = await PlanDeletedByAdmin(id,adminToken!);
+        if (res.status) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          }).then(()=>{
+            location.reload();
+          });
+        }
+      }
+    });
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const planData : PlanInputValues = {
-      name : planName,
-      amount : planPrice,
-      description : planDescription,
-      features: planFeatures
+    const planData: PlanInputValues = {
+      name: planName,
+      amount: planPrice,
+      description: planDescription,
+      features: planFeatures,
+    };
+
+    if (modalMode === 'add') {
+      const adminToken = localStorage.getItem('AdminToken');
+      const added = await PlanCreatedByAdmin(planData , adminToken!);
+      console.log(added.data);
+      if (added.data) {
+        location.reload();
+      }
+    } else if (modalMode === 'edit' && editedPlanId) { 
+      const updated = await UpdatePlan(editedPlanId, planData);
+      console.log(updated);
+      
     }
-    const res =await PlanCreatedByAdmin(planData);
-    console.log(res.data);
-    
+
     setIsModalOpen(!isModalOpen);
   };
 
@@ -79,23 +134,25 @@ const Bills: React.FC = () => {
       <div className="showright">
         <h2>Active Plans</h2>
         <div className="bills-grid">
-          {billandplans.map((bill, index) => (
+          {bills.map((bill, index) => (
             <div className="bill-box" key={index}>
-              <h3>{bill.planName}</h3>
+              <h3 className="uppercase">{bill.name}</h3>
               <p className="billAmount">
                 {bill.amount}
                 <span>/month</span>{" "}
               </p>
-              <p className="billdesc mb-2">{bill.desc}</p>
-              <button className="billedit">Edit Now</button>
-              <button className="billdelete">Delete</button>
+              <p className="billdesc mb-2">{bill.description}</p>
+              <button className="billedit" onClick={() => toggleModal('edit', bill)}>Edit Now</button> {/* Change 7 */}
+              <button className="billdelete" onClick={() => HandleDeleteSub(bill._id)}>Delete</button>
             </div>
           ))}
-          <div className="border-dotted" onClick={toggleModal}>
-            <div className="posticon">
-              <FiPlusCircle />
+          {bills.length < 3 && (
+            <div className="border-dotted" onClick={() => toggleModal('add')}> {/* Change 8 */}
+              <div className="posticon">
+                <FiPlusCircle />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -111,7 +168,7 @@ const Bills: React.FC = () => {
           ></div>
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-4 md:p-5 relative z-99">
             <h3 className="text-lg font-semibold text-gray-900">
-              Create New Product
+              {modalMode === 'add' ? 'Create New Product' : 'Edit Product'}
             </h3>
             <form className="mt-4" onSubmit={handleSubmit}>
               <div className="grid gap-4 mb-4">
@@ -199,7 +256,7 @@ const Bills: React.FC = () => {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={toggleModal}
+                  onClick={() => toggleModal('add')}
                   className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center mr-2"
                 >
                   Cancel
