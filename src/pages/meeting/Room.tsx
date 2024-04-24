@@ -81,7 +81,7 @@ const RoomPage: React.FC = () => {
     [socket]
   );
 
-  const handleNegoNeedFinal = useCallback(async ({ ans } : { ans : any}) => {
+  const handleNegoNeedFinal = useCallback(async ({ ans }: { ans: any }) => {
     await peer.setLocalDescription(ans);
   }, []);
 
@@ -119,18 +119,18 @@ const RoomPage: React.FC = () => {
   ]);
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#535353" }}>
       <h1 className="roompart-status">Room Page</h1>
-      <h4 className="roompart-status">{remoteSocketId ? "Connected" : "No one in room"}</h4>
-      {myStream && <button style={{backgroundColor:"#6e6ef3",color:"white",borderRadius:"5px",padding:"5px 10px"}} onClick={sendStreams}>Send Stream</button>}
-      <div className="text-center">
-      {remoteSocketId && <button className="roompart-button" onClick={handleCallUser}>CALL</button>}
-      </div>
-      <div className="roompart-video-container"> 
+      <h4 className="roompart-status">
+        {remoteSocketId ? "Connected" : "No one in room"}
+      </h4>
+
+      <div className="roompart-video-container">
         {myStream && (
-          <div className="roompart-video"> 
+          <div className="roompart-video">
             <h1>My Stream</h1>
             <ReactPlayer
+              style={{ padding: "40px", backgroundColor: "#414141" }}
               playing
               muted
               height="100%"
@@ -140,9 +140,10 @@ const RoomPage: React.FC = () => {
           </div>
         )}
         {remoteStream && (
-          <div className="roompart-video"> 
+          <div className="roompart-video">
             <h1>Remote Stream</h1>
             <ReactPlayer
+              style={{ padding: "40px", backgroundColor: "#414141" }}
               playing
               muted
               height="100%"
@@ -150,6 +151,26 @@ const RoomPage: React.FC = () => {
               url={remoteStream}
             />
           </div>
+        )}
+      </div>
+      <div className="text-center">
+        {remoteSocketId && (
+          <button className="roompart-button" onClick={handleCallUser}>
+            CALL
+          </button>
+        )}
+        {myStream && (
+          <button
+            style={{
+              backgroundColor: "#6e6ef3",
+              color: "white",
+              borderRadius: "5px",
+              padding: "5px 10px",
+            }}
+            onClick={sendStreams}
+          >
+            Send Stream
+          </button>
         )}
       </div>
     </div>

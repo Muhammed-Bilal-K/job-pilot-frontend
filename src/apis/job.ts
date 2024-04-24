@@ -21,6 +21,19 @@ export const SpecificJobAppliedCandiadates = async (id: string) => {
   }
 };
 
+export const JobAppliedCandiadate = async (id: string , jobId : string) => {
+  try {
+    console.log(id);
+    console.log(jobId);
+    
+    const res = await Api3.get(JobRoute.JobAppliedCandiadatesDetails(id , jobId));
+    return res.data;
+  } catch (error) {
+    console.error("Error creating company details:", error);
+    throw new Error("Error creating company details:");
+  }
+};
+
 export const MakeFavoriteJob = async (id: string , data : any) => {
   try {
     const res = await Api3.put(JobRoute.makeJobFavoriite(id), { ...data});

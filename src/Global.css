@@ -744,11 +744,11 @@
 .job-box {
   width: calc(33.33% - 10px);
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 12px;
   padding: 15px 18px;
   box-sizing: border-box;
   font-weight: 400;
-  box-shadow: 0 0 6px 0.2px #adadaddb;
+  box-shadow: -2px 1px 19px -7.8px #adadaddb;
 }
 
 .job-box h3 {
@@ -811,6 +811,8 @@
   justify-content: space-between;
   margin-top: 30px;
   align-items: center;
+  box-shadow: -2px 1px 15px -13px;
+  border-radius: 11px;
 }
 
 .job-filter input {
@@ -925,6 +927,7 @@
 }
 
 .comapny-input-from input[type="text"],
+.comapny-input-from input[type="date"],
 .comapny-input-from textarea {
   width: 100%;
   padding: 8px;
@@ -932,6 +935,16 @@
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 16px;
+}
+
+.company-select-form select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 .comapny-input-from textarea {
@@ -1078,7 +1091,6 @@
   border-radius: 3px;
 }
 
-
 /* Add this CSS to your stylesheet */
 
 .filter-modal-overlay {
@@ -1088,7 +1100,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999; 
+  z-index: 999;
 }
 
 .filter-modal {
@@ -1097,7 +1109,7 @@
   left: 0;
   width: 25%;
   height: 100%;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .filter-modal-content {
@@ -1105,6 +1117,16 @@
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   height: 100%;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.filter-modal .filter-modal-content label {
+  padding: 10px 20px;
+}
+
+.filter-modal .filter-modal-content label:hover {
+  background-color: #ebf5ff;
 }
 
 .filter-modal-content h2 {
@@ -1112,16 +1134,15 @@
 }
 
 .filter-modal-content div {
-  margin-bottom: 20px;
-}
-
-.filter-modal-content h3 {
   margin-bottom: 10px;
 }
+/* 
+.filter-modal-content h3 {
+  margin-bottom: 10px;
+} */
 
 .filter-modal-content label {
   display: block;
-  margin-bottom: 5px;
 }
 
 .filter-modal-content input[type="checkbox"],
@@ -1142,18 +1163,105 @@
   background-color: #4c63af;
 }
 
-
-.resume-part{
+.resume-part {
   margin-top: 10px;
-    width: 20%;
-    padding: 10px;
-    background-color: #d7ecff;
-    border-radius: 6px;
+  width: 20%;
+  padding: 10px;
+  background-color: #d7ecff;
+  border-radius: 6px;
 }
 
-.resume-user{
+.resume-user {
   padding: 10px 10px;
-    background-color: antiquewhite;
-    border-radius: 10px;
-    margin: 5px 0px;
+  background-color: antiquewhite;
+  border-radius: 10px;
+  margin: 5px 0px;
+}
+
+.company-vision textarea {
+  width: 80%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  height: 15vh;
+}
+
+.job-box .class-for-open-postions {
+  font-size: 15px;
+  padding: 12px 17px;
+  color: #567cc7;
+  background-color: #e7f0fa;
+  font-weight: 700;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.class-for-container-in-emplo-details .move-for-banner {
+  margin-top: -15px;
+  z-index: -1;
+  position: relative;
+}
+
+.class-for-container-in-emplo-details .banner-image-emplo {
+  width: 100%;
+  height: 325px;
+  border-radius: 30px;
+  box-shadow: 1px 2px 2px 3px ghostwhite;
+  object-fit: cover;
+  border: 1px solid #bcfde7;
+}
+
+.emplo-info-show-banner .small-banner-handle {
+  background: rgb(255, 255, 255);
+  border: 1px solid antiquewhite;
+  padding: 20px 50px;
+  border-radius: 15px;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin-top: -50px;
+  margin-left: 60px;
+  margin-right: 60px;
+  box-shadow: 2px 2px 11px -2px darkgrey;
+}
+
+.follow-media-set .follow-media {
+  border-top: 2px solid blanchedalmond;
+  z-index: 1;
+  position: relative;
+}
+
+.related-job {
+  border-top: 1px solid #d7d7d7;
+  margin-top: 120px;
+}
+
+
+.showright .current-plan-detail, .plan-detail-show{
+  border: 1px solid bisque;
+  border-radius: 15px;
+  padding: 15px 20px;
+}
+
+.showright .current-plan-detail .change-plan-detail{
+  padding: 15px 25px;
+  background-color: aliceblue;
+  color: #6262f0;
+  margin-top: 35px;
+  font-weight: 500;
+}
+
+.showright .show-choose-for-next-pay{
+  border: 1px solid bisque;
+  border-radius: 15px;
+  padding: 15px 20px;
+  width: 50%;
+  margin-top: 20px;
+}
+
+.modal-content .img-data-in-job-apply{
+  width: 70px;
+  border-radius: 50px;
 }

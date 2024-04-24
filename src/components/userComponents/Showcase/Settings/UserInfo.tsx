@@ -134,6 +134,8 @@ const UserInfo: React.FC = () => {
 
         await uploadBytes(logoRef, logoFile);
         logoURL = await getDownloadURL(logoRef);
+        console.log(logoURL);
+        
       } else {
         message.info(
           "File size exceeds 4 MB limit. Please choose a smaller file"
@@ -170,7 +172,7 @@ const UserInfo: React.FC = () => {
 
       const res = await HandleUserRestInfo(datas);
       if (res) {
-        message.info("profile updated");
+        message.success("profile updated successfully");
       }
     } catch (error: any) {
       console.log(error);

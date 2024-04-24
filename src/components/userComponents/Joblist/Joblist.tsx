@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoginInSuccess } from "../../../redux/slices/user.slice";
 import { message } from "antd";
 import { GetSpecificUser } from "../../../apis/user";
+import { MdTune } from "react-icons/md";
 
 interface Job {
   _id: string;
@@ -130,6 +131,8 @@ const JobList: React.FC = () => {
   };
 
   const handleSearchTitle = (title: string) => {
+    console.log(title);
+
     setSearchTitle(title);
   };
 
@@ -253,18 +256,37 @@ const JobList: React.FC = () => {
           onSearchTitle={handleSearchTitle}
           onSearchLocation={handleSearchLocation}
         />
-        <div>
-          <button className="mr-5" onClick={() => setShowFilterModal(true)}>
-            Filter
+        <div className="flex gap-3">
+          <div
+            style={{ backgroundColor: "#F1F2F4" }}
+            className="px-5 py-2 rounded-md"
+          >
+            <MdTune className="inline mr-3 text-2xl" />
+            <button
+              className=""
+              style={{ fontWeight: "600" }}
+              onClick={() => setShowFilterModal(true)}
+            >
+              Filters
+            </button>
+          </div>
+          <button
+            style={{ backgroundColor: "#0A65CC" }}
+            className="text-white px-3 py-2 text-1xl font-semibold rounded-md"
+            onClick={handleApplyFilters}
+          >
+            Find Job
           </button>
-          <button onClick={handleApplyFilters}>Apply</button>
         </div>
       </div>
       <div className="flex justify-evenly">
         <div>
-          <p onClick={()=>{
-            location.reload();
-          }} className="px-40 py-5 hover:border-b-2 hover:border-blue-300">
+          <p
+            onClick={() => {
+              location.reload();
+            }}
+            className="px-40 py-5 hover:border-b-2 hover:border-blue-300"
+          >
             Recent Jobs
           </p>
         </div>
@@ -382,11 +404,11 @@ const JobList: React.FC = () => {
       </div>
       <div className="flex items-center" style={{ justifyContent: "center" }}>
         <nav aria-label="Page navigation example">
-          <ul className="flex items-center -space-x-px h-8 text-sm">
+          <ul className="flex items-center -space-x-px h-8 text-sm gap-3">
             {currentPage > 1 && (
               <li>
                 <button
-                  className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border-gray-300 rounded-full hover:text-white dark:text-gray-400 hover:bg-blue-500 dark:hover:text-white"
                   onClick={() => handlePageChange(currentPage - 1)}
                 >
                   <span className="sr-only">Previous</span>
@@ -411,11 +433,11 @@ const JobList: React.FC = () => {
             {pageNumbers.map((pageNumber) => (
               <li key={pageNumber}>
                 <button
-                  className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border ${
+                  className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white ${
                     pageNumber === currentPage
                       ? "border-gray-800 text-gray-800" // Highlight current page
                       : "border-gray-300"
-                  } hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                  } hover:bg-gray-100 hover:text-gray-700 dark:text-black bg-blue-100 rounded-full dark:hover:bg-blue-500 dark:hover:text-white`}
                   onClick={() => handlePageChange(pageNumber)}
                 >
                   {pageNumber}
@@ -425,7 +447,7 @@ const JobList: React.FC = () => {
             {currentPage < 2 && (
               <li>
                 <button
-                  className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border-gray-300 rounded-full hover:text-white dark:text-gray-400 hover:bg-blue-500 dark:hover:text-white"
                   onClick={() => handlePageChange(currentPage + 1)}
                 >
                   <span className="sr-only">Next</span>
@@ -453,10 +475,10 @@ const JobList: React.FC = () => {
       {showFilterModal && (
         <div className="filter-modal">
           <div className="filter-modal-content">
-            <h2>Filter Jobs</h2>
+            <h2 style={{ color: "#234FD1" }}>Filter Jobs</h2>
             {/* Industry checkboxes */}
             <div>
-              <h3>Industry</h3>
+              <h3 style={{ color: "#234FD1" }}>Industry</h3>
               <label>
                 <input
                   type="checkbox"
@@ -480,7 +502,7 @@ const JobList: React.FC = () => {
             </div>
             {/* Salary range radio buttons */}
             <div>
-              <h3>Salary Range</h3>
+              <h3 style={{ color: "#234FD1" }}>Salary Range</h3>
               <label>
                 <input
                   type="radio"
@@ -514,7 +536,7 @@ const JobList: React.FC = () => {
             </div>
             {/* Job type checkboxes */}
             <div>
-              <h3>Job Type</h3>
+              <h3 style={{ color: "#234FD1" }}>Job Type</h3>
               <label>
                 <input
                   type="checkbox"
@@ -548,7 +570,7 @@ const JobList: React.FC = () => {
             </div>
             {/* Job sorting */}
             <div>
-              <h3>Job Sort by</h3>
+              <h3 style={{ color: "#234FD1" }}>Job Sort by</h3>
               <label>
                 <input
                   type="radio"

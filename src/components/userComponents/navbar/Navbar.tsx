@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
         <div className="left-sections">
           <Link to="/"> Home</Link>
           <Link to="/find-job">Find Job</Link>
-          <Link to="/employers">Employers</Link>
+          <Link to="/find-employer">Employers</Link>
         </div>
         <div className="right-sections">
           <div className="contact-number">+1-23-232323</div>

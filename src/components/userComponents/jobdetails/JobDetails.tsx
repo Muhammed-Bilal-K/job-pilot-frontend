@@ -15,10 +15,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { LoginInSuccess } from "../../../redux/slices/user.slice";
 import { message } from "antd";
+import { GetSpecificUser } from "../../../apis/user";
+import { FaRegMap } from "react-icons/fa";
 
 export const JobDetails: React.FC = () => {
   const storage = getStorage(app);
   const dispatch = useDispatch();
+
+  // const [userInfo, setUserInfo] = useState<any>({});
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [defaultPdf, setDefaultPdf] = useState<string>("");
 
   const { id } = useParams<{ id: string }>();
   const [specificJob, setSpecificJob] = useState<any>(null);
@@ -41,6 +47,21 @@ export const JobDetails: React.FC = () => {
   }, [User]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      if (User?._id) {
+        const response = await GetSpecificUser(User._id);
+        if (response.user) {
+          console.log(response.user);
+          // setUserInfo(response.user);
+          setDefaultPdf(response.user.resumeUrl);
+        }
+      }
+    };
+
+    fetchData();
+  }, [User?._id]);
+
+  useEffect(() => {
     const token = localStorage.getItem("Token");
     if (token && !candidate) {
       const fetchUserData = async (token: string) => {
@@ -57,12 +78,18 @@ export const JobDetails: React.FC = () => {
     }
   }, [User]);
 
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
+
+  console.log(isChecked);
+
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
-        const res = await ListAllJobs({},0);
+        const res = await ListAllJobs({}, 0);
         console.log(res.jobs);
-        
+
         const jobArray = res.jobs;
         const job = jobArray.find((job: any) => job._id === id);
         console.log(job);
@@ -139,36 +166,114 @@ export const JobDetails: React.FC = () => {
     setCoverLetter(e.target.value);
   };
 
+  console.log(defaultPdf);
+
+  // const handleSubmit = async (e: any) => {
+  //   e.preventDefault();
+
+  //   if (!selectedFile) {
+  //     return;
+  //   }
+
+  //   console.log(specificJob._id);
+  //   console.log(User._id);
+
+  //   const storageRef = ref(storage, `resumes/${selectedFile.name}`);
+  //   try {
+  //     await uploadBytes(storageRef, selectedFile);
+
+  //     const downloadURL = await getDownloadURL(storageRef);
+  //     const downloadURL = defaultPdf;
+
+  //     const job = await applyForJob({
+  //       resumeURL: downloadURL,
+  //       coverLetter: coverLetter,
+  //       jobId: specificJob._id,
+  //       userId: User._id,
+  //     });
+  //     console.log(job);
+  //     setIsModalOpen(false);
+  //     setSelectedFile(null);
+  //     message.info("Job Applied Successfully!");
+  //     location.reload();
+  //     setCoverLetter("");
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //   }
+  // };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
-    if (!selectedFile) {
-      return;
-    }
 
     console.log(specificJob._id);
     console.log(User._id);
 
-    const storageRef = ref(storage, `resumes/${selectedFile.name}`);
-    try {
-      await uploadBytes(storageRef, selectedFile);
-
-      const downloadURL = await getDownloadURL(storageRef);
-
-      const job = await applyForJob({
-        resumeURL: downloadURL,
-        coverLetter: coverLetter,
-        jobId: specificJob._id,
-        userId: User._id,
+    if (isChecked && defaultPdf) {
+      message.open({
+        type: "loading",
+        content: "Action in progress..",
+        duration: 2,
       });
-      console.log(job);
-      setIsModalOpen(false);
-      setSelectedFile(null);
-      message.info("Job Applied Successfully!")
-      location.reload();
-      setCoverLetter("");
-    } catch (error) {
-      console.error("Error uploading file:", error);
+
+      // If isChecked is true and defaultPdf exists, pass defaultPdf to the backend
+      try {
+        const job = await applyForJob({
+          resumeURL: defaultPdf,
+          coverLetter: coverLetter,
+          jobId: specificJob._id,
+          userId: User._id,
+        });
+        console.log(job);
+        if (job.message === 'job applied successfull.') {
+          message.success("Job Applied Successfully!");
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        }
+        setIsModalOpen(false);
+        setSelectedFile(null);
+        setCoverLetter("");
+      } catch (error) {
+        console.error("Error applying for job:", error);
+      }
+    } else {
+      if (!selectedFile) {
+        return;
+      }
+
+      message.open({
+        type: "loading",
+        content: "Action in progress..",
+        duration: 3,
+      });
+      // If isChecked is false or defaultPdf doesn't exist, upload the selected file
+      const storageRef = ref(storage, `resumes/${selectedFile.name}`);
+      try {
+        await uploadBytes(storageRef, selectedFile);
+
+        const downloadURL = await getDownloadURL(storageRef);
+
+        const job = await applyForJob({
+          resumeURL: downloadURL,
+          coverLetter: coverLetter,
+          jobId: specificJob._id,
+          userId: User._id,
+        });
+
+        console.log(job);
+
+        if (job.message === 'job applied successfull.') {
+          message.success("Job Applied Successfully!");
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        }
+        setIsModalOpen(false);
+        setSelectedFile(null);
+        setCoverLetter("");
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
   };
 
@@ -198,7 +303,10 @@ export const JobDetails: React.FC = () => {
                 <h5 className="capitalize text-2xl">{jobTitle}</h5>
               </div>
               <div className="company-main">
-                at <h5 className="inline capitalize mr-1 text-base">{companyname}</h5>{" "}
+                at{" "}
+                <h5 className="inline capitalize mr-1 text-base">
+                  {companyname}
+                </h5>{" "}
                 <p
                   className="inline text-white px-3 py-1 capitalize rounded-md"
                   style={{ backgroundColor: "#0BA02C" }}
@@ -269,14 +377,18 @@ export const JobDetails: React.FC = () => {
           <div className="salary-location-overview w-full">
             <div className="salary-location">
               <div className="firs-left-part">
-                <div className="salary-inr">
-                  <p>Salary</p>
-                  <p className="text-green-700 text-xl" style={{fontWeight:"600"}}>
+                <div className="salary-inr font-semibold capitalize">
+                  <p>Salary (USD)</p>
+                  <p
+                    className="text-green-700 text-xl"
+                    style={{ fontWeight: "600" }}
+                  >
                     ${minSalary},00-${maxSalary},00
                   </p>
                   <p>yearly salary</p>
                 </div>
-                <div className="salary-loca-only">
+                <div className="salary-loca-only flex flex-col justify-center items-center font-semibold capitalize">
+                  <FaRegMap fontSize="30px" className="text-blue-500"/>
                   <h5>Job Location</h5>
                   <p>
                     {country} , {state}
@@ -286,31 +398,34 @@ export const JobDetails: React.FC = () => {
             </div>
             <div className="border-gray-300 border px-6 py-6 mt-5">
               <h4 className="mb-3 font-medium">Job Overview</h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 capitalize" style={{fontWeight:"500",fontSize:"15px"}}>
+              <div
+                className="grid grid-cols-2 md:grid-cols-3 gap-4 capitalize"
+                style={{ fontWeight: "500", fontSize: "15px" }}
+              >
                 <div>
                   <CiCalendar />
                   <p className="mt-2">job posted</p>
-                  <p style={{color:"#888a89fa"}}>{formattedCreatedAt}</p>
+                  <p style={{ color: "#888a89fa" }}>{formattedCreatedAt}</p>
                 </div>
                 <div>
                   <CiCalendar />
                   <p className="mt-2">job expire in</p>
-                  <p  style={{color:"#888a89fa"}}>{expiredate}</p>
+                  <p style={{ color: "#888a89fa" }}>{expiredate}</p>
                 </div>
                 <div>
                   <CiCalendar />
                   <p className="mt-2">job level</p>
-                  <p style={{color:"#888a89fa"}}>{joblevel}</p>
+                  <p style={{ color: "#888a89fa" }}>{joblevel}</p>
                 </div>
                 <div>
                   <CiCalendar />
                   <p className="mt-2">experience(year)</p>
-                  <p style={{color:"#888a89fa"}}>{experience} experience</p>
+                  <p style={{ color: "#888a89fa" }}>{experience} experience</p>
                 </div>
                 <div>
                   <CiCalendar />
                   <p className="mt-2">education</p>
-                  <p style={{color:"#888a89fa"}}>{education}</p>
+                  <p style={{ color: "#888a89fa" }}>{education}</p>
                 </div>
               </div>
             </div>
@@ -358,21 +473,60 @@ export const JobDetails: React.FC = () => {
               <form onSubmit={handleSubmit} className="p-4 md:p-5">
                 <div className="grid gap-4 mb-4">
                   <div>
-                    <label
-                      htmlFor="resume"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Upload Resume
-                    </label>
-                    <input
-                      type="file"
-                      id="resume"
-                      name="resume"
-                      accept=".pdf"
-                      onChange={handleFileSelect}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      required
-                    />
+                    <div className="mb-2">
+                      <input
+                        type="checkbox"
+                        placeholder="use default resume"
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                      />
+                      <label
+                        className="text-white inline ml-2"
+                        htmlFor="useDefaultResume"
+                      >
+                        Use default resume
+                      </label>
+                    </div>
+
+                    <div>
+                      {isChecked ? (
+                        <>
+                          <label
+                            htmlFor="resume"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >
+                            Upload Resume
+                          </label>
+                          <input
+                            style={{ opacity: "0.5" }}
+                            type="file"
+                            disabled
+                            id="resume"
+                            name="resume"
+                            accept=".pdf"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <label
+                            htmlFor="resume"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >
+                            Upload Resume
+                          </label>
+                          <input
+                            type="file"
+                            id="resume"
+                            name="resume"
+                            accept=".pdf"
+                            onChange={handleFileSelect}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required
+                          />
+                        </>
+                      )}
+                    </div>
                     {fileError && <p className="text-red-500">{fileError}</p>}
                   </div>
                   <div>
@@ -392,11 +546,32 @@ export const JobDetails: React.FC = () => {
                     ></textarea>
                   </div>
                 </div>
-                <button
+                {/* <button
                   type="submit"
                   disabled={!selectedFile}
                   className={`text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${
                     !selectedFile ? "cursor-not-allowed" : ""
+                  }`}
+                >
+                  <svg
+                    className="me-1 -ms-1 w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  Apply
+                </button> */}
+                <button
+                  type="submit"
+                  disabled={!selectedFile && !isChecked}
+                  className={`text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${
+                    !selectedFile && !isChecked ? "cursor-not-allowed" : ""
                   }`}
                 >
                   <svg

@@ -1,6 +1,6 @@
 import React from "react";
-import { BsBuildingsFill, BsCalendar2Range } from "react-icons/bs";
 import { IoSettingsOutline } from "react-icons/io5";
+import { LuUserCircle2 } from "react-icons/lu";
 
 import { Link } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const SettingNavbar: React.FC = () => {
           <Link to="/candidate/user-dash/settings" className="">
             <div className="flex items-center px-7 py-3 btn-over-sett">
               <div>
-                <BsBuildingsFill className="showcase-icons" />
+                <LuUserCircle2 className="showcase-icons" />
               </div>
               <div>
                 <span className="ml-5">User Info</span>

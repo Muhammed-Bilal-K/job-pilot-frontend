@@ -1,5 +1,6 @@
 import { Api, Api2, Api3 } from "../services/api";
 import authRoutes from "../services/endPoints/Endpoint";
+import EmployerRoute from "../services/endPoints/companyEndPoint";
 // import JobRoute from "../services/endPoints/jobEndpoint";
 
 interface FormValues {
@@ -249,6 +250,23 @@ export const ListAllJobs = async (
     throw err;
   }
 };
+
+export const ListAllCompanies = async (
+  queryParameters: any,
+  currentPage: number
+) => {
+  try {
+    const res = await Api2.get(EmployerRoute.ListAllCompanies, {
+      params: { ...queryParameters, currentPage: currentPage },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+
 
 
 

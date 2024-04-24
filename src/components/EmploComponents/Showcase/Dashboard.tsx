@@ -42,7 +42,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="showcase">
       <ShowLeftComponent />
-      <div className="showright">
+      <div className="showright capitalize">
         <div className="top-info">
           Hello, {employer ? employer : "processing..."}
         </div>
