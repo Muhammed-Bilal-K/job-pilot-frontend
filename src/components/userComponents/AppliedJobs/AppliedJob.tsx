@@ -10,6 +10,7 @@ const AppliedJob: React.FC = () => {
   const navigate = useNavigate();
   const [job, setJobs] = useState<
     {
+      shortlisted: string;
       job: {
         _id: any;
         company: any;
@@ -121,7 +122,10 @@ const AppliedJob: React.FC = () => {
                 </td>
                 <td className="px-3 py-3">
                   <div className="flex items-center justify-center">
-                    <p>{job.status}</p>
+                      {
+                        job.shortlisted ? 
+                        <p className="text-green-700">ShortListed</p> : <p className="text-blue-600">Pending</p>
+                      }
                   </div>
                 </td>
                 <td className="px-3 py-3">

@@ -84,9 +84,9 @@ export const EmploDetails: React.FC = () => {
   };
 
   const HandleFaovriteJobs = async (id: string) => {
-    const jobInfo = {
-      JobId: id,
-    };
+    // const jobInfo = {
+    //   JobId: id,
+    // };
 
     if (User?._id === undefined || null) {
       return message.info("need to signIn First");
