@@ -1,7 +1,6 @@
 import React from "react";
 import logoPilot from "../../../assets/Logo.png";
 import profilePic from "../../../assets/Ellipse 18.png";
-import bellIcons from "../../../assets/BellRinging.png";
 import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
@@ -25,7 +24,6 @@ const Navbar: React.FC = () => {
         </div>
         {token ? (
           <div className="border-none verify">
-            <img src={bellIcons} alt="" className="bell-class" />
             <Link to='/candidate/user-dash' >
             <img src={profilePic} alt="" />
             </Link>

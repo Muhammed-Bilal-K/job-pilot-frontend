@@ -1,4 +1,5 @@
-import { Api3 } from "../services/api";
+import { Api3, Api4 } from "../services/api";
+import ChatRoute from "../services/endPoints/chatEndpoints";
 import JobRoute from "../services/endPoints/jobEndpoint";
 
 export const EmployerSpecificJobs = async (email: string) => {
@@ -23,10 +24,20 @@ export const SpecificJobAppliedCandiadates = async (id: string) => {
 
 export const JobAppliedCandiadate = async (id: string , jobId : string) => {
   try {
+    const res = await Api3.get(JobRoute.JobAppliedCandiadatesDetails(id , jobId));
+    return res.data;
+  } catch (error) {
+    console.error("Error creating company details:", error);
+    throw new Error("Error creating company details:");
+  }
+};
+
+export const MakeShortListCandidate = async (id: string , jobId : string) => {
+  try {
     console.log(id);
     console.log(jobId);
     
-    const res = await Api3.get(JobRoute.JobAppliedCandiadatesDetails(id , jobId));
+    const res = await Api3.put(JobRoute.MakeShortListCandidate(id , jobId));
     return res.data;
   } catch (error) {
     console.error("Error creating company details:", error);
@@ -41,6 +52,16 @@ export const MakeFavoriteJob = async (id: string , data : any) => {
   } catch (error) {
     console.error("Error creating company details:", error);
     throw new Error("Error creating company details:");
+  }
+};
+
+export const JobAppliedViewUpdate = async (data : any) => {
+  try {
+    const res = await Api4.post(ChatRoute.makeJobAppliedStatus, { ...data});
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error creating new notification");
   }
 };
 

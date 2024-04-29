@@ -52,3 +52,13 @@ export const CreateConversation = async (allData : ICConversation) => {
     throw new Error("Error creating company details:");
   }
 };
+
+export const getAllNotification = async (id : string) => {
+  try {
+    const res = await Api4.get(chatRoutes.getNotification(id));
+    return res.data;
+  } catch (error) {
+    console.error("Error creating company details:", error);
+    throw new Error("Error no notification");
+  }
+};

@@ -70,8 +70,6 @@ const Messanger: React.FC = () => {
       const matchingMember = currentChat.members.some(
         (member: { _id: any }) => member._id === arrivalMessage.sender
       );
-      console.log(matchingMember, "fr");
-
       if (matchingMember) {
         setMessages((prev) => [...prev, arrivalMessage]);
       }

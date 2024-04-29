@@ -1,10 +1,22 @@
-import React from 'react'
-import { ShowLeftComponent } from '../ShowLeftComo'
-import ApplicantNav from './ApplicantNav'
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { ShowLeftComponent } from "../ShowLeftComo";
+import ApplicantNav from "./ApplicantNav";
+import { useParams } from "react-router-dom";
+import { SpecificJobAppliedCandiadates } from "../../../../apis/job";
 
-export const ShortList : React.FC= () => {
+export const ShortList: React.FC = () => {
+  const [applications, setApplications] = useState<any[]>([]);
   const { id } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const respo = await SpecificJobAppliedCandiadates(id!);
+      console.log(respo.jobs);
+      setApplications(respo.jobs);
+    };
+    fetchData();
+  }, [id]);
+
   return (
     <>
       <div className="showcase">
@@ -13,42 +25,59 @@ export const ShortList : React.FC= () => {
           <ApplicantNav JobId={id} />
           <table className="employers-table">
             <tbody>
-              <tr>
-                <td>
-                  <div>
-                    <div className="mb-2">
-                      <p className="font-semibold">Michal</p>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="flex items-center mr-2">
-                        <p className="font-medium">UI UX Designer</p>
+              {applications.map((application) => (
+                application.shortlisted && (
+                  <tr key={application._id}>
+                  <td>
+                    <div>
+                      <div className="mb-2">
+                        <p className="font-semibold capitalize">
+                          {application.user.name}
+                        </p>
                       </div>
                       <div className="flex items-center">
-                        <p className="font-medium">7 - experience</p>
+                        <div className="flex items-center mr-2">
+                          <p className="font-medium capitalize">
+                            {application.job.jobTitle}
+                          </p>
+                        </div>
+                        <div className="flex items-center">
+                          <p className="font-medium capitalize">
+                            {application.job.experience} - experience
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td>Open To Message</td>
-                <td>Download CV</td>
-                <td>
-                  <button
-                    className="view-applications-btn px-5 py-2 rounded-lg"
-                    style={{ backgroundColor: "#E7F0FA" }}
-                  >
-                    View Details
-                  </button>
-                </td>
-                <td className="shortlist-td">
-                  <button className="make-shortlist-btn px-0 py-2 rounded-lg">
-                    Make Shortlist
-                  </button>
-                </td>
-              </tr>
+                  </td>
+                  <td>
+                    {application.resumeURL && (
+                      <a
+                        href={application.resumeURL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Download CV
+                      </a>
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      // onClick={() => {
+                      //   HandleShowDetail(application.user._id);
+                      // }}
+                      className="view-applications-btn px-5 py-2 rounded-lg"
+                      style={{ backgroundColor: "#E7F0FA" }}
+                    >
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+                )
+              ))}
             </tbody>
           </table>
         </div>
       </div>
     </>
-  )
-}
+  );
+};

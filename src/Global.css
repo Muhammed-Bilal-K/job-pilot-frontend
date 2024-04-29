@@ -216,7 +216,7 @@
 .banner-section {
   display: flex;
   justify-content: center;
-  background-color: #f1f2f4;
+  background-color: #f7f7f8;
   height: 80vh;
 }
 
@@ -287,7 +287,7 @@
 
 .contain-all-box {
   padding-bottom: 70px;
-  background-color: #f1f2f4;
+  background-color: #f7f7f8;
 }
 
 .box-section {
@@ -1238,14 +1238,14 @@
   margin-top: 120px;
 }
 
-
-.showright .current-plan-detail, .plan-detail-show{
+.showright .current-plan-detail,
+.plan-detail-show {
   border: 1px solid bisque;
   border-radius: 15px;
   padding: 15px 20px;
 }
 
-.showright .current-plan-detail .change-plan-detail{
+.showright .current-plan-detail .change-plan-detail {
   padding: 15px 25px;
   background-color: aliceblue;
   color: #6262f0;
@@ -1253,7 +1253,7 @@
   font-weight: 500;
 }
 
-.showright .show-choose-for-next-pay{
+.showright .show-choose-for-next-pay {
   border: 1px solid bisque;
   border-radius: 15px;
   padding: 15px 20px;
@@ -1261,7 +1261,62 @@
   margin-top: 20px;
 }
 
-.modal-content .img-data-in-job-apply{
+.modal-content .img-data-in-job-apply {
   width: 70px;
   border-radius: 50px;
+}
+
+.resume-box-show {
+  border-radius: 15px;
+  border: 2px solid beige;
+  padding: 15px 25px;
+}
+
+/* ////////////////////////////////////////////// */
+
+.jobWork-box-container {
+  display: flex;
+  justify-content: center;
+  background-color: #f1f2f4;
+}
+
+.jobWork-box {
+  width: 250px;
+  padding: 25px;
+  margin: 20px 10px;
+  text-align: center;
+}
+
+.jobWork-box:hover {
+  border: 1px solid #ccc;
+  background-color: white;
+  border-radius: 15px;
+  transition: 0.5s;
+  box-shadow: 7px 7px 25px lightblue;
+}
+
+.jobWork-box .react-icon {
+  margin: 0px auto;
+  background: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
+  padding: 11px;
+  color: rgb(100, 100, 231);
+}
+
+.jobWork-box:hover .react-icon{
+  background: rgb(100, 100, 231);
+  color: white;
+  transition: 0.5s;
+}
+
+.jobWork-box h2 {
+  margin: 10px 0;
+}
+
+.jobWork-box p {
+  margin: 5px 0;
+  font-weight: 400;
+  font-size: small;
 }

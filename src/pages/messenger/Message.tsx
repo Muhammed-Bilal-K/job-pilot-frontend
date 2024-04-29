@@ -14,6 +14,9 @@ const Message: React.FC<MessageProps> = ({ own, message }) => {
     addSuffix: true,
   });
 
+  console.log(message);
+  
+
   return (
     <>
       <div
