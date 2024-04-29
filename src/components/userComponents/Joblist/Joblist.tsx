@@ -12,6 +12,7 @@ import { LoginInSuccess } from "../../../redux/slices/user.slice";
 import { message } from "antd";
 import { GetSpecificUser } from "../../../apis/user";
 import { MdTune } from "react-icons/md";
+import Pagination from "../Pagination/Pagination";
 
 interface Job {
   _id: string;
@@ -402,7 +403,7 @@ const JobList: React.FC = () => {
               </div>
             ))}
       </div>
-      <div className="flex items-center" style={{ justifyContent: "center" }}>
+      {/* <div className="flex items-center" style={{ justifyContent: "center" }}>
         <nav aria-label="Page navigation example">
           <ul className="flex items-center -space-x-px h-8 text-sm gap-3">
             {currentPage > 1 && (
@@ -471,7 +472,16 @@ const JobList: React.FC = () => {
             )}
           </ul>
         </nav>
+      </div> */}
+
+      <div className="flex items-center" style={{ justifyContent: "center" }}>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={arrayNavCount}
+        onPageChange={handlePageChange}
+      />
       </div>
+
       {showFilterModal && (
         <div className="filter-modal">
           <div className="filter-modal-content">

@@ -4,6 +4,7 @@ import JobFilter from "./CompanyFilter";
 import { IoLocationOutline } from "react-icons/io5";
 import { ListAllCompanies } from "../../../apis/auth";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../Pagination/Pagination";
 
 interface Job {
   _id: string;
@@ -89,9 +90,8 @@ const CompanyList: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         console.log(jobDiffFilter);
-        
+
         const respo = await ListAllCompanies(jobDiffFilter, currentPage);
         console.log(respo);
 
@@ -217,7 +217,7 @@ const CompanyList: React.FC = () => {
               </div>
             ))}
       </div>
-      <div className="flex items-center" style={{ justifyContent: "center" }}>
+      {/* <div className="flex items-center" style={{ justifyContent: "center" }}>
         <nav aria-label="Page navigation example">
           <ul className="flex items-center -space-x-px h-8 text-sm gap-3">
             {currentPage > 1 && (
@@ -286,6 +286,13 @@ const CompanyList: React.FC = () => {
             )}
           </ul>
         </nav>
+      </div> */}
+      <div className="flex items-center" style={{ justifyContent: "center" }}>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={arrayNavCount}
+          onPageChange={handlePageChange}
+        />
       </div>
       {showFilterModal && (
         <div className="filter-modal">
