@@ -2,8 +2,8 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "../app/login/page";
 import Signin from "../app/signin/page";
-import Forgetform from "../components/userComponents/ForgetPass/Forgetform";
-import ForgetPass from "../components/userComponents/ForgetPass/ForgetPass";
+import Forgetform from '../components/userComponents/ForgetPage/Forgetform'
+import ForgetPass from '../components/userComponents/ForgetPage/ForgetPass';
 import Verification from "../components/userComponents/verification/Verification";
 import EmployerRoute from "./EmployerRoute";
 import AdminRoute from "./AdminRoute";
