@@ -41,7 +41,10 @@ const Messanger: React.FC = () => {
 
   useEffect(() => {
     // socket.current = io("http://localhost:3004");
-    socket.current = io("http://www.jobpilot.dev");
+    // socket.current = io("wss://www.jobpilot.dev");
+    socket.current = io('wss://www.jobpilot.dev', {
+            path: "/api/v4/chat/"
+        });
 
     socket.current.on("connect", () => {
       console.log("Connected to Socket.IO server", socket.current?.id);
