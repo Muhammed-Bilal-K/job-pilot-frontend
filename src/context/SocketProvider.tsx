@@ -16,8 +16,13 @@ interface SocketProviderProps {
 }
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
-  
-  const socket = useMemo(() => io("http://localhost:3004"), []);
+  const socket = useMemo(
+    () =>
+      io("wss://www.jobpilot.dev", {
+        path: "/api/v4/chat/",
+      }),
+    []
+  );
 
   return (
     <SocketContext.Provider value={socket}>
