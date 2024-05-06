@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { ShowLeftComponent } from "../ShowLeftComo";
 import SettingNavbar from "./SettingNavbar";
 // import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,7 @@ interface ICompanyInfo {
 
 const UserAccount: React.FC = () => {
   //   const [employer, setEmployer] = useState<string>("");
-  const [empInfo, setEmpInfo] = useState<any>({});
+  // const [empInfo, setEmpInfo] = useState<any>({});
   //   const dispatch = useDispatch();
   //   const Employer: any = useSelector((state: RootState) => {
   //     return state.employer.currentEmployer;

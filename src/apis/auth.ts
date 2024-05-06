@@ -207,9 +207,10 @@ export const UpdatePlan = async (id: string, planData: any) => {
   }
 };
 
+//Api3  --> Api
 export const GetCompanyInfo = async () => {
   try {
-    const res = await Api3.get(authRoutes.GetCompanyInfo);
+    const res = await Api.get(authRoutes.GetCompanyInfo);
 
     return res;
   } catch (err: any) {
@@ -218,30 +219,33 @@ export const GetCompanyInfo = async () => {
   }
 };
 
+//Api2  --> Api
 export const makePayment = async (stripeCustomer: any) => {
   try {
-    const res = await Api2.post(authRoutes.Payment, { ...stripeCustomer });
+    const res = await Api.post(authRoutes.Payment, { ...stripeCustomer });
     return res;
   } catch (err) {
     throw err;
   }
 };
 
+//Api3  --> Api
 export const CreateJobByCompany = async (data: any) => {
   try {
-    const res = await Api3.post(authRoutes.CreateJob, { ...data });
+    const res = await Api.post(authRoutes.CreateJob, { ...data });
     return res;
   } catch (err) {
     throw err;
   }
 };
 
+//Api3  --> Api
 export const ListAllJobs = async (
   queryParameters: any,
   currentPage: number
 ) => {
   try {
-    const res = await Api3.get(authRoutes.ListAllJobs, {
+    const res = await Api.get(authRoutes.ListAllJobs, {
       params: { ...queryParameters, currentPage: currentPage },
     });
     return res.data;
@@ -251,12 +255,13 @@ export const ListAllJobs = async (
   }
 };
 
+//Api2  --> Api
 export const ListAllCompanies = async (
   queryParameters: any,
   currentPage: number
 ) => {
   try {
-    const res = await Api2.get(EmployerRoute.ListAllCompanies, {
+    const res = await Api.get(EmployerRoute.ListAllCompanies, {
       params: { ...queryParameters, currentPage: currentPage },
     });
     return res.data;
@@ -266,13 +271,10 @@ export const ListAllCompanies = async (
   }
 };
 
-
-
-
-
+//Api3  --> Api
 export const ListAllJobApplicant = async () => {
   try {
-    const res = await Api3.get(authRoutes.ListAllJobApplicant);
+    const res = await Api.get(authRoutes.ListAllJobApplicant);
     return res;
   } catch (err) {
     console.log(err);
@@ -280,9 +282,10 @@ export const ListAllJobApplicant = async () => {
   }
 };
 
+//Api2  --> Api
 export const CurrentAuthInfo = async () => {
   try {
-    const res = await Api2.get(authRoutes.getListofAuth);
+    const res = await Api.get(authRoutes.getListofAuth);
     return res;
   } catch (error) {
     console.log(error);
@@ -300,11 +303,12 @@ export const currentUser = async (token: string) => {
   }
 };
 
+//Api3  --> Api
 export const applyForJob = async (formData: any) => {
   try {
     console.log(formData);
 
-    const response = await Api3.post(authRoutes.ApplyForJob, formData);
+    const response = await Api.post(authRoutes.ApplyForJob, formData);
     return response.data;
   } catch (error) {
     console.error("Error applying for job:", error);
@@ -312,9 +316,10 @@ export const applyForJob = async (formData: any) => {
   }
 };
 
+//Api3  --> Api
 export const ParticularUser = async (id: string) => {
   try {
-    const response = await Api3.get(authRoutes.ListAllJobApplicantById(id));
+    const response = await Api.get(authRoutes.ListAllJobApplicantById(id));
     return response.data;
   } catch (error) {
     console.error("Error applying for job:", error);
@@ -322,9 +327,10 @@ export const ParticularUser = async (id: string) => {
   }
 };
 
+//Api3  --> Api
 export const FavoriteJobByUser = async (id: string) => {
   try {
-    const response = await Api3.get(authRoutes.FavoriteJobByUser(id));
+    const response = await Api.get(authRoutes.FavoriteJobByUser(id));
     return response.data;
   } catch (error) {
     console.error("Error applying for job:", error);

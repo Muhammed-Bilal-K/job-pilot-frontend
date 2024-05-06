@@ -1,7 +1,6 @@
 import React from 'react';
 import { IoIosSearch } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
-import { MdTune } from "react-icons/md";
 
 interface Props {
   onSearchTitle: (title: string) => void;

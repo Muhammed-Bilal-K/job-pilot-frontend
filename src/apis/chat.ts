@@ -1,5 +1,5 @@
 import Message from "../@types/interfaces/chat/message";
-import { Api4 } from "../services/api";
+import { Api } from "../services/api";
 import chatRoutes from "../services/endPoints/chatEndpoints";
 
 interface ICConversation {
@@ -7,15 +7,17 @@ interface ICConversation {
   recieverId: string,
 }
 
-const getHeaders = (token: string) => ({
-  headers: {
-    Authorization: token,
-  },
-});
+// const getHeaders = (token: string) => ({
+//   headers: {
+//     Authorization: token,
+//   },
+// });
+
+//Api4  --> Api
 
 export const listConversation = async (id: string) => {
   try {
-    const res = await Api4.get(chatRoutes.listConversation(id));
+    const res = await Api.get(chatRoutes.listConversation(id));
     return res.data;
   } catch (err) {
     console.log(err);
@@ -23,9 +25,10 @@ export const listConversation = async (id: string) => {
   }
 };
 
+//Api4  --> Api
 export const getMessagesList = async (id: string) => {
   try {
-    const res = await Api4.get(chatRoutes.getMessagesList(id));
+    const res = await Api.get(chatRoutes.getMessagesList(id));
     return res.data;
   } catch (err) {
     console.log(err);
@@ -33,9 +36,10 @@ export const getMessagesList = async (id: string) => {
   }
 };
 
+//Api4  --> Api
 export const sendMessageBySeperate = async (message: Message) => {
   try {
-    const res = await Api4.post(chatRoutes.sendMessageBySeperate, { ...message } );
+    const res = await Api.post(chatRoutes.sendMessageBySeperate, { ...message } );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -43,9 +47,10 @@ export const sendMessageBySeperate = async (message: Message) => {
   }
 };
 
+//Api4  --> Api
 export const CreateConversation = async (allData : ICConversation) => {
   try {
-    const res = await Api4.post(chatRoutes.CreateConversation,{ ...allData});
+    const res = await Api.post(chatRoutes.CreateConversation,{ ...allData});
     return res.data;
   } catch (error) {
     console.error("Error creating company details:", error);
@@ -53,9 +58,10 @@ export const CreateConversation = async (allData : ICConversation) => {
   }
 };
 
+//Api4  --> Api
 export const getAllNotification = async (id : string) => {
   try {
-    const res = await Api4.get(chatRoutes.getNotification(id));
+    const res = await Api.get(chatRoutes.getNotification(id));
     return res.data;
   } catch (error) {
     console.error("Error creating company details:", error);

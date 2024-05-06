@@ -1,5 +1,3 @@
-import { ListAllCompanies } from "../../apis/auth";
-
 const EmployerRoute = {
     companyInfoCreate: "/api/v2/employer/save-data",
     companyInfoUpdate: "/api/v2/employer/update-found-info",

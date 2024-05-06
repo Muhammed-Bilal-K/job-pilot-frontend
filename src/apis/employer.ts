@@ -1,4 +1,4 @@
-import { Api2 } from "../services/api";
+import { Api, Api2 } from "../services/api";
 import companyRoutes from "../services/endPoints/companyEndPoint";
 
 interface ICompanyInfo {
@@ -23,9 +23,10 @@ interface IUpdateCompanyInfo {
   socialLinks2: string;
 }
 
+//Api2  --> Api
 export const SubmitCompnayInfo = async (data: ICompanyInfo) => {
   try {
-    const res = await Api2.post(companyRoutes.companyInfoCreate, { ...data });
+    const res = await Api.post(companyRoutes.companyInfoCreate, { ...data });
 
     return res;
   } catch (error) {
@@ -34,9 +35,10 @@ export const SubmitCompnayInfo = async (data: ICompanyInfo) => {
   }
 };
 
+//Api2  --> Api
 export const UpdateCompanyInfo = async (data: IUpdateCompanyInfo) => {
   try {
-    const res = await Api2.put(companyRoutes.companyInfoUpdate, { ...data });
+    const res = await Api.put(companyRoutes.companyInfoUpdate, { ...data });
 
     return res.data;
   } catch (error) {
@@ -45,9 +47,10 @@ export const UpdateCompanyInfo = async (data: IUpdateCompanyInfo) => {
   }
 };
 
+//Api2  --> Api
 export const GetSpecificCompany = async (id: string) => {
   try {
-    const res = await Api2.get(companyRoutes.specificCompany(id));
+    const res = await Api.get(companyRoutes.specificCompany(id));
 
     return res.data;
   } catch (error) {

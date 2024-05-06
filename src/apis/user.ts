@@ -1,4 +1,4 @@
-import { Api5 } from "../services/api";
+import { Api, Api5 } from "../services/api";
 import UserRoute from "../services/endPoints/userEndpoints";
 
 interface IUserInfo {
@@ -13,9 +13,10 @@ interface IUserInfo {
     resumeUrl : string;
   }
 
+//Api5  --> Api
 export const HandleUserRestInfo = async (data: IUserInfo) => {
     try {
-      const res = await Api5.post(UserRoute.UserInfoRestCreate, { ...data });
+      const res = await Api.post(UserRoute.UserInfoRestCreate, { ...data });
   
       return res;
     } catch (error) {
@@ -24,9 +25,10 @@ export const HandleUserRestInfo = async (data: IUserInfo) => {
     }
   };
 
+  //Api5  --> Api
 export const GetSpecificUser = async (id: string) => {
     try {
-      const res = await Api5.get(UserRoute.UserByAuthId(id));
+      const res = await Api.get(UserRoute.UserByAuthId(id));
   
       return res.data;
     } catch (error) {

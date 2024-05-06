@@ -11,11 +11,11 @@ import { FaSquareFacebook } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaRegBookmark } from "react-icons/fa";
 import { RootState } from "../../../redux/store";
-import { EmployerSpecificJobs, MakeFavoriteJob } from "../../../apis/job";
+import { EmployerSpecificJobs } from "../../../apis/job";
 import { PiSuitcaseSimpleLight } from "react-icons/pi";
 import { RiBuilding2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { message } from "antd";
+// import { message } from "antd";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
@@ -83,23 +83,23 @@ export const EmploDetails: React.FC = () => {
     navigate(`/find-job/job-details/${job._id}`);
   };
 
-  const HandleFaovriteJobs = async (id: string) => {
-    // const jobInfo = {
-    //   JobId: id,
-    // };
+  // const HandleFaovriteJobs = async (id: string) => {
+  //   // const jobInfo = {
+  //   //   JobId: id,
+  //   // };
 
-    if (User?._id === undefined || null) {
-      return message.info("need to signIn First");
-    }
+  //   if (User?._id === undefined || null) {
+  //     return message.info("need to signIn First");
+  //   }
 
-    try {
-      // const res = await MakeFavoriteJob(User._id, jobInfo);
-      // console.log(res);
-      // message.info(res.message);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  //   try {
+  //     // const res = await MakeFavoriteJob(User._id, jobInfo);
+  //     // console.log(res);
+  //     // message.info(res.message);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   console.log(specificCompany);
 
@@ -320,9 +320,9 @@ export const EmploDetails: React.FC = () => {
                           <span>
                             <FaRegBookmark
                               className="cursor-pointer"
-                              onClick={() => {
-                                HandleFaovriteJobs(job._id);
-                              }}
+                              // onClick={() => {
+                                // HandleFaovriteJobs(job._id);
+                              // }}
                             />
                           </span>
                         </div>
