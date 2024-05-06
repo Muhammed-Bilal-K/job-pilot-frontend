@@ -43,7 +43,7 @@ const Messanger: React.FC = () => {
     // socket.current = io("http://localhost:3004");
     // socket.current = io("wss://www.jobpilot.dev");
     socket.current = io('wss://www.jobpilot.dev', {
-            path: "/api/v4/chat/"
+            path: "/api/v4/chat"
     });
 
     socket.current.on("connect", () => {
