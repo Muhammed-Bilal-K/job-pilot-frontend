@@ -34,7 +34,7 @@
 
 import axios from "axios";
 
-const Api = axios.create({ baseURL:"http://www.jobpilot.dev" });
+const Api = axios.create({ baseURL:"https://www.jobpilot.dev" });
 const Api2 = ''
 const Api3 = ''
 const Api4 = ''
