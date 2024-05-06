@@ -1,4 +1,4 @@
-import { Api, Api5 } from "../services/api";
+import { Api } from "../services/api";
 import UserRoute from "../services/endPoints/userEndpoints";
 
 interface IUserInfo {

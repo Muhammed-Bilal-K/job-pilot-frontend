@@ -1,4 +1,4 @@
-import { Api, Api2, Api3 } from "../services/api";
+import { Api } from "../services/api";
 import authRoutes from "../services/endPoints/Endpoint";
 import EmployerRoute from "../services/endPoints/companyEndPoint";
 // import JobRoute from "../services/endPoints/jobEndpoint";

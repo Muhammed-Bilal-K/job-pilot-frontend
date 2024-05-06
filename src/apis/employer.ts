@@ -1,4 +1,4 @@
-import { Api, Api2 } from "../services/api";
+import { Api } from "../services/api";
 import companyRoutes from "../services/endPoints/companyEndPoint";
 
 interface ICompanyInfo {
