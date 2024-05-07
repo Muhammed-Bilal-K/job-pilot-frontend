@@ -18,15 +18,11 @@ interface SocketProviderProps {
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const socket = useMemo(
     () =>
-      io("wss://www.jobpilot.dev", {
-        path: "/api/v4/chat",
-      }),
+      io("wss://jobpilot.dev"),
     []
   );
 
   return (
-    <SocketContext.Provider value={socket}>
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };

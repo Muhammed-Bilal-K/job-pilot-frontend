@@ -40,12 +40,7 @@ const Messanger: React.FC = () => {
   const socket = useRef<Socket>();
 
   useEffect(() => {
-    // socket.current = io("http://localhost:3004");
-    // socket.current = io("wss://www.jobpilot.dev");
-    socket.current = io('wss://www.jobpilot.dev', {
-            path: "/api/v4/chat"
-    });
-
+    socket.current = io("wss://jobpilot.dev");
     socket.current.on("connect", () => {
       console.log("Connected to Socket.IO server", socket.current?.id);
     });
@@ -69,7 +64,6 @@ const Messanger: React.FC = () => {
   }, []);
 
   useEffect(() => {
-
     if (arrivalMessage && currentChat) {
       const matchingMember = currentChat.members.some(
         (member: { _id: any }) => member._id === arrivalMessage.sender
@@ -112,7 +106,6 @@ const Messanger: React.FC = () => {
     fetchData();
   }, [currentChat]);
 
-
   const handleSubmitMessage = async (e: any) => {
     e.preventDefault();
     if (newMessage.trim() !== "" && socket.current && id) {
@@ -125,7 +118,7 @@ const Messanger: React.FC = () => {
         text: newMessage,
         conversationId: currentChat?._id,
       };
-      
+
       if (currentChat) {
         const receiverId = localStorage.getItem("senderIdforMessage");
         console.log(receiverId);
@@ -177,7 +170,7 @@ const Messanger: React.FC = () => {
               {conver.map((c) => (
                 <div onClick={() => setCurrentChat(c)}>
                   <Conversation conv={c} currentUser={id!} />
-                </div>                
+                </div>
               ))}
             </div>
           </div>
@@ -198,9 +191,9 @@ const Messanger: React.FC = () => {
                     </div>
                     <div className="flex justify-between">
                       <div className="mr-6">
-                      <Link to={`/lobby`}> 
-                        <IoIosVideocam />
-                      </Link>
+                        <Link to={`/lobby`}>
+                          <IoIosVideocam />
+                        </Link>
                       </div>
                       <div>
                         <FaInfoCircle />
