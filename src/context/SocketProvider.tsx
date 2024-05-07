@@ -18,7 +18,7 @@ interface SocketProviderProps {
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const socket = useMemo(
     () =>
-      io("wss://jobpilot.dev"),
+      io("wss://www.recardo.store"),
     []
   );
 
