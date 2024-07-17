@@ -19,6 +19,7 @@ import LobbyScreen from "../pages/meeting/Lobby";
 import RoomPage from "../pages/meeting/Room";
 import CompanyList from "../components/userComponents/CompanyList/Companylist";
 import { EmploDetails } from "../components/userComponents/EmployerDetails/EmploDetails";
+import NotFoundPage from "../pages/FoundNot";
 const RouteManagment: React.FC = () => {
   return (
     <>
@@ -55,6 +56,9 @@ const RouteManagment: React.FC = () => {
         <>
           <Route path="/lobby" element={<LobbyScreen />} />
           <Route path="/room/:roomId" element={<RoomPage />} />
+        </>
+        <>
+          <Route path="*" element={<NotFoundPage />} />
         </>
       </Routes>
     </>

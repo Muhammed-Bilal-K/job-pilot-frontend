@@ -1,4 +1,6 @@
 import React from 'react';
+import { IoIosSearch } from "react-icons/io";
+import { IoLocationOutline } from "react-icons/io5";
 
 interface Props {
   onSearchTitle: (title: string) => void;
@@ -16,8 +18,10 @@ const CompanyFilter: React.FC<Props> = ({ onSearchTitle, onSearchLocation }) => 
 
   return (
     <div className="job-filter">
-      <input className='input1' type="text" placeholder="Search Job Title" onChange={handleTitleChange} />
-      <input type="text" placeholder="Search Location" onChange={handleLocationChange} />
+      <IoIosSearch className='inline text-3xl mr-3 text-blue-500' />
+      <input className='input1' type="text" placeholder="Search by: Job tittle, Position, Keyword..." onChange={handleTitleChange} />
+      <IoLocationOutline className='inline text-2xl mr-3 text-blue-500'/>
+      <input type="text" placeholder="City, state or zip code" onChange={handleLocationChange} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { RootState } from "../../../redux/store";
 import { currentUser } from "../../../apis/auth";
 import { LoginInSuccess } from "../../../redux/slices/user.slice";
 import { MdOutlineMessage } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAllNotification } from "../../../apis/chat";
 import { BsChatLeftDotsFill } from "react-icons/bs";
 import { formatDistanceToNow } from "date-fns";
@@ -26,6 +26,7 @@ const NavBar: React.FC<NavBarProps> = ({
   const [notifyData, setnotifyData] = useState<any>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const User: any = useSelector((state: RootState) => {
     return state.user.currentUser;
   });
@@ -73,9 +74,12 @@ const NavBar: React.FC<NavBarProps> = ({
       <nav className="emploClass">
         <div className="emploClass-left">
           <img
+            onClick={()=>{
+              navigate('/')
+            }}
             src={logo}
             alt="Logo"
-            className="emploClass-logo"
+            className="emploClass-logo cursor-pointer"
           />
         </div>
         <div className="emploClass-right">

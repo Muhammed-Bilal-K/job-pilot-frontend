@@ -1,11 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RiStackLine } from 'react-icons/ri';
 import { CiBookmark } from "react-icons/ci";
 import { FiBriefcase } from 'react-icons/fi';
 import { IoMdSettings } from 'react-icons/io';
 
 export const ShowLeftComponent: React.FC = () => {
+  const navigate = useNavigate();
+  const LogoutFunction = () => {
+    localStorage.clear();
+    navigate('/');
+  }
+
   return (
     <>
       <div className="showcase-left">
@@ -25,6 +31,9 @@ export const ShowLeftComponent: React.FC = () => {
           <Link to="/candidate/user-dash/settings" className="btn-showcase">
             <IoMdSettings className="showcase-icons" /> <span className="ml-5">Settings</span>
           </Link>
+          <p className="ml-60 mt-24">
+            <span className="text-red-800 cursor-pointer" onClick={LogoutFunction}>Logout</span>
+          </p>
         </div>
       </div>
     </>

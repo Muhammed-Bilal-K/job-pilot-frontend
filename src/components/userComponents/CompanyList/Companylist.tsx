@@ -5,6 +5,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { ListAllCompanies } from "../../../apis/auth";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../Pagination/Pagination";
+import { MdTune } from "react-icons/md";
 
 interface Job {
   _id: string;
@@ -134,11 +135,27 @@ const CompanyList: React.FC = () => {
           onSearchTitle={handleSearchTitle}
           onSearchLocation={handleSearchLocation}
         />
-        <div>
-          <button className="mr-5" onClick={() => setShowFilterModal(true)}>
-            Filter
+        <div className="flex gap-3">
+          <div
+            style={{ backgroundColor: "#F1F2F4" }}
+            className="px-5 py-2 rounded-md"
+          >
+            <MdTune className="inline mr-3 text-2xl" />
+            <button
+              className=""
+              style={{ fontWeight: "600" }}
+              onClick={() => setShowFilterModal(true)}
+            >
+              Filters
+            </button>
+          </div>
+          <button
+            style={{ backgroundColor: "#0A65CC" }}
+            className="text-white px-3 py-2 text-1xl font-semibold rounded-md"
+            onClick={handleApplyFilters}
+          >
+            Find Company
           </button>
-          <button onClick={handleApplyFilters}>Apply</button>
         </div>
       </div>
 

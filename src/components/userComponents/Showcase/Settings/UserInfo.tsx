@@ -88,7 +88,7 @@ const UserInfo: React.FC = () => {
 
   const handleUploadResume = () => {
     if (resumeInputRef.current) {
-      resumeInputRef.current.click(); // Trigger click event to open file dialog
+      resumeInputRef.current.click();
     }
   };
 
@@ -173,6 +173,7 @@ const UserInfo: React.FC = () => {
       const res = await HandleUserRestInfo(datas);
       if (res) {
         message.success("profile updated successfully");
+        location.reload();
       }
     } catch (error: any) {
       console.log(error);
@@ -360,10 +361,10 @@ const UserInfo: React.FC = () => {
               ref={resumeInputRef}
               onChange={handleResumeChange}
             />
-            <p onClick={handleUploadResume}>Add resume +</p>
+            <p className="" onClick={handleUploadResume}>Add resume +</p>
           </div>
           <div className="text-center">
-            <button type="submit">Submit</button>
+            <button className="bg-blue-500 px-4 py-2 text-white rounded-lg" type="submit">Submit</button>
           </div>
         </form>
       </div>
