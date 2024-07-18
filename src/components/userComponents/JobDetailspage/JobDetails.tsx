@@ -135,7 +135,7 @@ export const JobDetails: React.FC = () => {
 
   const handleApply = () => {
     if (checkAbleApply?.resumeUrl === '') {
-      message.warning("you should need to fill all information first!");
+      message.warning("you should need to fill information first goto settings --> user Info!");
       return;
     }
 

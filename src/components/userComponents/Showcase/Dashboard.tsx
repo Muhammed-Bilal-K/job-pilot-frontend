@@ -92,8 +92,8 @@ const Dashboard: React.FC = () => {
         <div>
           {checkAbleApply && !checkAbleApply.resumeUrl && (
             <h3 className="mt-5 text-center text-red-800 capitalize text-xl">
-              First you need to fill in all the information about yourself in
-              the settings, then you can apply for a job!
+              First you need to fill in all the information about yourself in <br />
+              the <span className="underline text-green-900">settings</span> &#8594; <span className="underline text-green-900">User Info</span> , then you can apply for a job!
             </h3>
           )}
         </div>
