@@ -361,7 +361,9 @@ const UserInfo: React.FC = () => {
               ref={resumeInputRef}
               onChange={handleResumeChange}
             />
-            <p className="" onClick={handleUploadResume}>Add resume +</p>
+            <div className="w-28 mt-4">
+              <p className="bg-blue-600 rounded-lg px-2 text-center py-2 cursor-pointer text-white" onClick={handleUploadResume}>Add resume</p>
+            </div>
           </div>
           <div className="text-center">
             <button className="bg-blue-500 px-4 py-2 text-white rounded-lg" type="submit">Submit</button>
