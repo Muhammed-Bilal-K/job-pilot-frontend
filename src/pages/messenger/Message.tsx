@@ -25,7 +25,7 @@ const Message: React.FC<MessageProps> = ({ own, message }) => {
         <div className="messageCenter-messageTop">
           <img
             className="messageCenter-messageImg"
-            src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+            src="https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
             alt=""
           />
           <p className="messageCenter-messageText">{message.text}</p>
