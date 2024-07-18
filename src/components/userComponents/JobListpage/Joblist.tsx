@@ -227,8 +227,10 @@ const JobList: React.FC = () => {
       JobId: id,
     };
 
-    if (cId === undefined) {
-      return message.info("need to signIn First");
+    console.log(cId);
+    
+    if (cId === '') {
+      return message.info("need to signIn first");
     }
 
     try {

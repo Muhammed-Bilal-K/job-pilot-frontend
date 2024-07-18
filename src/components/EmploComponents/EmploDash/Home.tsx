@@ -26,7 +26,7 @@ const Home: React.FC = () => {
         <Route path="/emplo-dash/bills_details" element={<PlanDetails />} />
         <Route path="/emplo-dash/settings" element={<CompanyInfo />} />
         <Route path="/emplo-dash/found-info" element={<FoundingInfo />} />
-        <Route path="/emplo-dash/company-settings" element={<CompanyInfo />} />
+        // <Route path="/emplo-dash/company-settings" element={<CompanyInfo />} />
         <Route path="/emplo-dash/my_jobs/:id/all_applicants" element={<AllApplicant />} />
         <Route path="/emplo-dash/my_jobs/:id/short_list" element={<ShortList />} />
       </Routes>

@@ -30,7 +30,8 @@ const SettingNavbar: React.FC = () => {
               </div>
             </div>
           </Link>
-          <Link to="/employer/emplo-dash/company-settings" className="">
+          {/* <Link to="/employer/emplo-dash/company-settings" className=""> */}
+          <Link to="" className="">
             <div className="flex items-center px-7 py-3 btn-over-sett">
               <div>
                 <IoSettingsOutline className="showcase-icons" />

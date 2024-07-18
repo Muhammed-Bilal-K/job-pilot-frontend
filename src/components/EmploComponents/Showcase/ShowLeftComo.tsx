@@ -28,6 +28,12 @@ export const ShowLeftComponent: React.FC = () => {
           <Link to="/employer/emplo-dash/settings" className="btn-showcase">
             <IoMdSettings className="showcase-icons" /> <span className="ml-5">Settings</span>
           </Link>
+          <p className=" text-red-800 text-base ml-60 mt-20">
+             <span className='cursor-pointer' onClick={()=>{
+              localStorage.clear();
+              location.reload();
+             }}>Logout</span>
+          </p>
         </div>
       </div>
     </>

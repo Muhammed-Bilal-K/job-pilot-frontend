@@ -74,6 +74,12 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
+      <div>
+      <h3 className="mt-5 text-center text-red-800 capitalize text-xl">
+              First you need to fill in all the information about yourself in <br />
+              the <span className="underline text-green-900">settings</span> &#8594; <span className="underline text-green-900">Company Info</span> and <span className="underline text-green-900">Founding Info</span> , then you can post job!
+            </h3>
+      </div>
       </div>
     </div>
   );

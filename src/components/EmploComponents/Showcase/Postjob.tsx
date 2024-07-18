@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { message } from "antd";
 import { RootState } from '../../../redux/store';
 import { signInSuccess } from "../../../redux/slices/employer.slice";
+import { GetSpecificCompany } from "../../../apis/employer";
 
 interface Plan {
   _id: string;
@@ -70,6 +71,41 @@ const initialErrors = {
   jobDescription: "",
 };
 
+interface Job {
+  _id: string;
+  company?: {
+    _id: string;
+    companyId: string;
+    name: string;
+    email: string;
+    logo: string;
+    banner: string;
+    about: string;
+    industryType: string;
+    country: string;
+    state: string;
+    organizationType: string;
+    teamSize: string;
+    yearEstablished: string;
+    website: string;
+    vision: string;
+    socialLinks1: string;
+    socialLinks2: string;
+    phone: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+  jobTitle: string;
+  logo: string;
+  jobtype: string;
+  minSalary: string;
+  maxSalary: string;
+  country: string;
+  state: string;
+  companylogo: string;
+}
+
 const Postjob: React.FC = () => {
   const [employer, setEmployer] = useState("");
   const dispatch =  useDispatch();
@@ -82,6 +118,7 @@ const Postjob: React.FC = () => {
 
   const [planDetail, setPlanDetail] = useState<Plan[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [joblist, setJoblist] = useState<Job | null>(null);
   const [comp, setComp] = useState<CompanyInfo[]>([]);
   const [compAuth, SetcompAuth] = useState<CompanyAuthInfo[]>([]);
   const [errors, setErrors] = useState<any>(initialErrors);
@@ -194,7 +231,40 @@ const Postjob: React.FC = () => {
     }
   }, [comp]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (Employer?._id) {
+        const respo = await GetSpecificCompany(Employer._id);
+        console.log(respo.Company);
+        setJoblist(respo.Company);
+      }
+    };
+    fetchData();
+  }, [Employer?._id]);
+
+  console.log(joblist);
+  
+  
   const HandleSubcription = async (planId: string) => {
+
+    if (!joblist) {
+      message.info('you need to fill all information in settings -> company Info and Founding Info');
+      return;
+  }
+
+  if (joblist._id === '' || joblist.jobTitle === '' || joblist.logo === '' || joblist.jobtype === '' || joblist.minSalary === '' || joblist.maxSalary === ''|| joblist.country === '' || joblist.state === '' || joblist.companylogo === '') {
+    message.info('you need to fill all information in settings -> company Info and Founding Info');
+    return;
+  }
+
+  if (joblist.company) {
+      const company = joblist.company;
+      if (company._id === '' || company.companyId === '' || company.name === '' || company.email === '' || company.logo === '' || company.banner === '' || company.about === '' || company.industryType === '' || company.country === '' || company.state === '' || company.organizationType === '' || company.teamSize === '' || company.yearEstablished === '' || company.website === '' || company.vision === '' || company.socialLinks1 === '' || company.socialLinks2 === '') {
+        message.info('you need to fill all information in settings -> company Info and Founding Info');
+        return;
+      }
+  }
+
     const plan = planDetail.find((id) => id._id === planId);
     const companyId = localStorage.getItem("companyAuhtId");
     const allData = {

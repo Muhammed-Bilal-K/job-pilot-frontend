@@ -9,6 +9,7 @@ import {
   GetSpecificCompany,
   UpdateCompanyInfo,
 } from "../../../../apis/employer";
+import { message } from "antd";
 
 interface ICompanyInfo {
   companyId: string;
@@ -110,6 +111,13 @@ const FoundingInfo: React.FC = () => {
     const SocialLinks1 = SocialLinks1Ref.current?.value || "";
     const SocialLinks2 = SocialLinks2Ref.current?.value || "";
 
+    if (OrganizationType === '' || IndustryType === '' || TeamSize === '' || YearOfEstablished === '' || CompanyWebsiteUrl === ''
+      || CompanyVision === '' || SocialLinks1 === '' || SocialLinks2 === ''
+    ) {
+      message.warning('fill all remaining informations');
+      return;
+    }
+
     try {
       const datas: ICompanyInfo = {
         companyId: Employer?._id,
@@ -127,7 +135,14 @@ const FoundingInfo: React.FC = () => {
       console.log(datas);
 
       const res = await UpdateCompanyInfo(datas);
+      message.loading('progressing.....')
       console.log(res);
+      if (res.message == 'Company Data saved successfully.') {
+        message.success(res.data.message);
+        location.reload();
+      } else {
+        message.error("something went wrong!");
+      }
     } catch (error: any) {
       console.log(error);
     }

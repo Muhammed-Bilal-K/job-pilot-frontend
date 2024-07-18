@@ -112,6 +112,11 @@ const CompanyInfo: React.FC = () => {
     const logoFile = logoInputRef.current?.files?.[0];
     const bannerFile = bannerInputRef.current?.files?.[0];
 
+    if (companyName === '' || emailAddress === '' || aboutUs === '' || logoFile === undefined || bannerFile === undefined) {
+      message.warning('fill all remaining informations');
+      return;
+    }
+
     let logoURL = "";
     if (logoFile) {
       const fileSizeInMB = logoFile.size / (1024 * 1024);
@@ -156,6 +161,7 @@ const CompanyInfo: React.FC = () => {
       console.log(datas);
       
       const res = await SubmitCompnayInfo(datas);
+      message.loading('progressing.....')
       if (res) {
         message.info("profile updated");
         location.reload();
