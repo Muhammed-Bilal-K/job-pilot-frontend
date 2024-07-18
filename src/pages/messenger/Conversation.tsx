@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./conversation.css";
 import { formatDistanceToNow } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 interface ConversationProps {
   conv: any;
@@ -13,6 +14,7 @@ const HandleSenderId = (c: any) => {
 
 const Conversation: React.FC<ConversationProps> = ({ conv, currentUser }) => {
   const [user, setuser] = useState<{ username: string }>({ username: "" });
+  const navigate = useNavigate();
   console.log(currentUser);
   console.log(conv);
 
@@ -34,8 +36,10 @@ const Conversation: React.FC<ConversationProps> = ({ conv, currentUser }) => {
       className="convenCenter-conversation"
       onClick={() => HandleSenderId(user)}
     >
-      <img
-        className="convenCenter-conversationImg"
+      <img onClick={()=>{
+        navigate('/')
+      }}
+        className="convenCenter-conversationImg cursor-pointer"
         src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
         alt=""
       />

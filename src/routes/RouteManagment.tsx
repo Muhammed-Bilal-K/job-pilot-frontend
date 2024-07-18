@@ -2,8 +2,8 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "../app/login/page";
 import Signin from "../app/signin/page";
-import Forgetform from '../components/userComponents/ForgetPage/Forgetform'
-import ForgetPass from '../components/userComponents/ForgetPage/ForgetPass';
+import Forgetform from "../components/userComponents/ForgetPage/Forgetform";
+import ForgetPass from "../components/userComponents/ForgetPage/ForgetPass";
 import Verification from "../components/userComponents/verification/Verification";
 import EmployerRoute from "./EmployerRoute";
 import AdminRoute from "./AdminRoute";
@@ -20,6 +20,7 @@ import RoomPage from "../pages/meeting/Room";
 import CompanyList from "../components/userComponents/CompanyList/Companylist";
 import { EmploDetails } from "../components/userComponents/EmployerDetails/EmploDetails";
 import NotFoundPage from "../pages/FoundNot";
+import { MessageProtext } from "./ProtectRoute/MessageProtext";
 const RouteManagment: React.FC = () => {
   return (
     <>
@@ -33,7 +34,10 @@ const RouteManagment: React.FC = () => {
         </Route>
         <Route path="/find-job" element={<Joblist />} />
         <Route path="/find-employer" element={<CompanyList />} />
-        <Route path="/find-employer/employer-details/:id" element={<EmploDetails />} />
+        <Route
+          path="/find-employer/employer-details/:id"
+          element={<EmploDetails />}
+        />
         <Route path="/find-job/job-details/:id" element={<JobDetails />} />
         <Route element={<PrivateRouteAuth />}>
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -51,11 +55,15 @@ const RouteManagment: React.FC = () => {
           <Route path="/success" element={<Success />} />
         </>
         <>
-          <Route path="/message/:id" element={<Messanger />} />
+          <Route element={<MessageProtext />}>
+            <Route path="/message/:id" element={<Messanger />} />
+          </Route>
         </>
         <>
-          <Route path="/lobby" element={<LobbyScreen />} />
-          <Route path="/room/:roomId" element={<RoomPage />} />
+          <Route element={<MessageProtext />}>
+            <Route path="/lobby" element={<LobbyScreen />} />
+            <Route path="/room/:roomId" element={<RoomPage />} />
+          </Route>
         </>
         <>
           <Route path="*" element={<NotFoundPage />} />

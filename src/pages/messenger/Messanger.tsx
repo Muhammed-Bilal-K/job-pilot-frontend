@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Conversation from "./Conversation";
 import { IoIosVideocam } from "react-icons/io";
 import { FaInfoCircle } from "react-icons/fa";
@@ -25,6 +25,7 @@ interface UserData {
 
 const Messanger: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   console.log(id);
   const [conver, setConver] = useState<any[]>([]);
   const [currentChat, setCurrentChat] = useState<ConversationType | null>(null);
@@ -158,7 +159,15 @@ const Messanger: React.FC = () => {
   return (
     <>
       <div className="Header-part-for-video">
-        <h2>JobPilot</h2>
+        <h2 className="cursor-pointer text-2xl" onClick={()=>{
+          const token = localStorage.getItem("Token");
+          const emplo = localStorage.getItem("Emplo");
+          if (token) {
+            navigate('/');
+          } else if(emplo){
+            navigate('/employer/emplo-dash');
+          }
+        }} >JobPilot</h2>
       </div>
       <div className="MessageCenter-messenger">
         <div className="MessageCenter-chatMenu">
