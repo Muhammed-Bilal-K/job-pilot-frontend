@@ -64,52 +64,59 @@ const Login : React.FC = () => {
 
 
   return (
-    <>
-      <div className="register-page flex justify-center items-center relative">
-        <div className="register-form mt-20">
-          <div className="jobpilot-logo absolute top">
-            <div className="job-logo">
-              <img src={logoPilot} alt="login" className="login login-page" />
-            </div>
+    <div className="register-page flex justify-center items-center relative min-h-screen">
+      <div className="register-form mt-20 max-w-lg w-full px-6 sm:px-10">
+        <div className="jobpilot-logo absolute top-0 left-0 right-0 flex justify-center sm:static">
+          <img onClick={()=>{
+            navigate('/');
+          }} src={logoPilot} alt="login" className="h-12 w-auto" />
+        </div>
+        <h1 className="create_account text-2xl font-bold mt-6">Sign In.</h1>
+        <h4 className="already_account mt-2 text-sm">
+          Don't have an account? <span className="inline cursor-pointer text-blue-600" onClick={() => navigate('/signin')}>Sign In</span>
+        </h4>
+        <div className="all-align-set mt-4">
+          <div className="mb-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="custom-input custom-width w-full px-3 py-2 border rounded-md"
+              placeholder="Email"
+            />
           </div>
-          <h1 className="create_account">Sign In.</h1>
-          <h4 className="already_account">Don't have an account? <h2 className="inline cursor-pointer" onClick={()=> navigate('/signin')}>Sign In</h2></h4>
-          <div className="all-aligh-set">
-            <div>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="custom-input custom-width"
-                placeholder="Email"
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="custom-input custom-width"
-                placeholder="Password"
-              />
-            </div>
-            <p onClick={() => navigate('/forgetpass')} className='cursor-pointer flex justify-end'>Forget Password</p>
+          <div className="mb-4">
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="custom-input custom-width w-full px-3 py-2 border rounded-md"
+              placeholder="Password"
+            />
           </div>
-          <div>
-            <h6 className="mt-3 term-service"><input type="checkbox" name="" id="" />  I've read and agree with your Terms of Services</h6>
-          </div>
-          <button onClick={handleRegister} className="register-button">Sign In<span className="text">  &#8594;</span></button>
-          <div className="text-center">
+          <p onClick={() => navigate('/forgetpass')} className='cursor-pointer text-right text-sm text-blue-600'>Forget Password</p>
+        </div>
+        <div className="mt-4">
+          <h6 className="term-service flex items-center text-sm">
+            <input type="checkbox" className="mr-2" /> I've read and agree with your Terms of Services
+          </h6>
+        </div>
+        <button onClick={handleRegister} className="register-button mt-4 w-full py-2 bg-blue-600 text-white rounded-md">
+          Sign In<span className="ml-2">&#8594;</span>
+        </button>
+        <div className="text-center mt-4">
           <span>OR</span>
-          </div>
-          <button onClick={handleGoogleSignUp} className="google-signup-button">Sign Up with Google</button>
         </div>
-        <div className="register-image">
-          <img className="" src={loginlogo} alt="Registration" />
-        </div>
+        <button onClick={handleGoogleSignUp} className="google-signup-button mt-4 w-full py-2 border border-gray-300 rounded-md">
+          Sign Up with Google
+        </button>
       </div>
-    </>
+      <div className="register-image hidden lg:flex">
+        <img src={loginlogo} alt="Registration" className="h-full w-auto" />
+      </div>
+    </div>
   );
+
 }
 
 export default Login;

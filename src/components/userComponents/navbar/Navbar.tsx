@@ -115,9 +115,9 @@ const Navbar: React.FC = () => {
                 />
               </Link>
             ) : (
-              <Link to="/signin">
+              <Link to="/login">
                   <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded border-2 border-transparent hover:bg-white hover:border-blue-400 hover:text-blue-600 transition duration-300">
-                    Sign In
+                    LogIn
                   </button>
               </Link>
             )}
@@ -185,7 +185,7 @@ const Navbar: React.FC = () => {
           </Link>
         ) : (
           <button className="tmt-4 px-4 py-2 bg-blue-600 text-white rounded border-2 border-transparent hover:bg-white hover:border-blue-400 hover:text-blue-600 transition duration-300">
-            <Link to="/signin">Sign In</Link>
+            <Link to="/logIn">LogIn</Link>
           </button>
         )}
       </div>

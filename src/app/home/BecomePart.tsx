@@ -7,7 +7,7 @@ const BecomePart: React.FC = () => {
   const navigate = useNavigate();
   
   const handleMoveRegister = () => {
-    navigate('/signin');
+    navigate('/login');
   }
 
   return (

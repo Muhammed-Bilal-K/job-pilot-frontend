@@ -1,10 +1,10 @@
 import React, { MouseEvent, useState } from "react";
 import Signlogo from "../../assets/sigininlogo.png";
 import logoPilot from "../../assets/Logo.png";
-import candidate from "../../assets/image 6.png";
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
+import { LuUserCircle2 } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-import employer from "../../assets/image 7.png";
 import { SocialAuth, register } from "../../apis/auth";
 import { auth, provider } from "../utilities/firebase";
 import { signInWithPopup } from "firebase/auth";
@@ -146,117 +146,112 @@ const Signin: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="register-page flex justify-center items-center relative">
-        <div className="register-form mt-20">
-          <div className="jobpilot-logo absolute top">
-            <div className="job-logo">
-              <img src={logoPilot} alt="login" className="login" />
-            </div>
-          </div>
-          <h1 className="create_account">Create Account.</h1>
-          <h4 className="already_account">
-            already have account?{" "}
-            <h2
-              className="inline cursor-pointer"
-              onClick={() => navigate("/login")}
+    <div className="register-page flex justify-center items-center relative min-h-screen max-h-screen">
+      <div className="register-form mt-20 max-w-lg w-full px-6 sm:px-10">
+        <div className="jobpilot-logo absolute top-0 left-0 right-0 flex justify-center sm:static">
+          <img 
+            onClick={() => { navigate('/'); }}
+            src={logoPilot} alt="login" className="h-12 w-auto" 
+          />
+        </div>
+        <h1 className="create_account text-2xl font-bold mt-6">Create Account.</h1>
+        <h4 className="already_account mt-2 text-sm">
+          already have account?{" "}
+          <span className="inline cursor-pointer text-blue-600" onClick={() => navigate("/login")}>
+            Login
+          </span>
+        </h4>
+        <div className="account_selections mt-4">
+          <h3 className="text-center text-lg">CREATE ACCOUNT AS A</h3>
+          <div className="flex justify-center mt-2">
+            <label
+              className={`mr-4 p-2 border rounded-md cursor-pointer ${selectedType === "candidate" ? "border-blue-600 bg-[#042852] text-white" : "border-gray-300"}`}
+              onClick={() => handleTypeSelection("candidate")}
             >
-              Login
-            </h2>
-          </h4>
-          <div className="account_selections">
-            <h3>CREATE ACCOUNT AS A</h3>
-            <div className="seperate-the-select">
-              <label
-                className={selectedType === "candidate" ? "selected" : ""}
-                onClick={() => handleTypeSelection("candidate")}
-              >
-                <span className="checkbox-text">
-                  <img src={candidate} alt="candidate" /> Candidate
-                </span>
-              </label>
-              <label
-                className={selectedType === "employer" ? "selected" : ""}
-                onClick={() => handleTypeSelection("employer")}
-              >
-                <span className="checkbox-text">
-                  <img src={employer} alt="employer" /> Employer
-                </span>
-              </label>
-            </div>
+              <span className="checkbox-text flex items-center">
+                <LuUserCircle2 className="h-full"/> Candidate
+              </span>
+            </label>
+            <label
+              className={`p-2 border rounded-md cursor-pointer ${selectedType === "employer" ? "border-blue-600 bg-[#042852] text-white"  : "border-gray-300"}`}
+              onClick={() => handleTypeSelection("employer")}
+            >
+              <span className="checkbox-text flex items-center">
+                <HiOutlineBuildingOffice2 className="h-full"/> Employer
+              </span>
+            </label>
           </div>
-
-          <div className="all-aligh-set">
-            <div className="flex justify-between">
-              <div>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="custom-input"
-                  placeholder="Full Name"
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="custom-input"
-                  placeholder="Username"
-                />
-              </div>
-            </div>
-            <div>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="custom-input custom-width"
-                placeholder="Email"
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="custom-input custom-width"
-                placeholder="Password"
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="custom-input custom-width"
-                placeholder="Confirm Password"
-              />
-            </div>
-          </div>
-          <div>
-            <h6 className="mt-3 term-service">
-              <input type="checkbox" name="" id="" /> I've read and agree with
-              your Terms of Services
-            </h6>
-          </div>
-          <button onClick={handleRegister} className="register-button">
-            Create Account<span className="text"> &#8594;</span>
-          </button>
-          <div className="text-center">
-            <span>OR</span>
-          </div>
-          <button onClick={handleGoogleSignIn} className="google-signup-button">
-            Sign Up with Google
-          </button>
         </div>
-        <div className="register-image">
-          <img className="" src={Signlogo} alt="Registration" />
+  
+        <div className="all-align-set mt-4">
+          <div className="flex flex-wrap -mx-2">
+            <div className="w-full sm:w-1/2 px-2 mb-4">
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="custom-input w-full px-3 py-2 border rounded-md"
+                placeholder="Full Name"
+              />
+            </div>
+            <div className="w-full sm:w-1/2 px-2 mb-4">
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="custom-input w-full px-3 py-2 border rounded-md"
+                placeholder="Username"
+              />
+            </div>
+          </div>
+          <div className="mb-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="custom-input w-full px-3 py-2 border rounded-md"
+              placeholder="Email"
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="custom-input w-full px-3 py-2 border rounded-md"
+              placeholder="Password"
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="custom-input w-full px-3 py-2 border rounded-md"
+              placeholder="Confirm Password"
+            />
+          </div>
         </div>
+        <div className="mb-4">
+          <h6 className="flex items-center text-sm">
+            <input type="checkbox" className="mr-2" /> I've read and agree with your Terms of Services
+          </h6>
+        </div>
+        <button onClick={handleRegister} className="register-button w-full py-2 bg-blue-600 text-white rounded-md">
+          Create Account<span className="ml-2">&#8594;</span>
+        </button>
+        <div className="text-center mt-4">
+          <span>OR</span>
+        </div>
+        <button onClick={handleGoogleSignIn} className="google-signup-button mt-4 w-full py-2 border border-gray-300 rounded-md">
+          Sign Up with Google
+        </button>
       </div>
-    </>
-  );
+      <div className="register-image hidden lg:flex">
+        <img src={Signlogo} alt="Registration" className="h-full w-auto" />
+      </div>
+    </div>
+  );  
 };
 
 export default Signin;
