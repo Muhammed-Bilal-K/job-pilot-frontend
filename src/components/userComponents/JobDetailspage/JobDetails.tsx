@@ -193,12 +193,21 @@ export const JobDetails: React.FC = () => {
   };
 
   console.log(defaultPdf);
+  console.log(coverLetter);
+  console.log(specificJob._id);
+  console.log(User._id);
+  
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     console.log(specificJob._id);
     console.log(User._id);
+    
+    if (User._id === '' || specificJob._id === '' || coverLetter === '') {
+      message.info('complete all details!');
+      return
+    }
 
     if (isChecked && defaultPdf) {
       message.open({

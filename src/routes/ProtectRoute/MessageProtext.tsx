@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, Outlet } from "react-router-dom";
 
-export const MessageProtext = () => {
+export const MessageProtext :React.FC = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("Token");
     const emplo = localStorage.getItem("Emplo");
