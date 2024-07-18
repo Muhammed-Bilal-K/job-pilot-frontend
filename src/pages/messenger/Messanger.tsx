@@ -41,8 +41,8 @@ const Messanger: React.FC = () => {
   const socket = useRef<Socket>();
 
   useEffect(() => {
-    socket.current = io("wss://jobpilot.dev");
-    // socket.current = io("wss://www.recardo.store");
+    // socket.current = io("wss://jobpilot.dev");
+    socket.current = io("wss://www.recardo.store");
     socket.current.on("connect", () => {
       console.log("Connected to Socket.IO server", socket.current?.id);
     });
