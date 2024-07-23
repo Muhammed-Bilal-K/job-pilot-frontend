@@ -13,10 +13,10 @@ interface FormValues {
 }
 
 interface ISocialAuth {
-  fullname: string | null;
-  username: string | null;
+  // fullname: string | null;
+  // username: string | null;
   email: string | null;
-  role: string | undefined;
+  // role: string | undefined;
 }
 
 interface InputValues {
