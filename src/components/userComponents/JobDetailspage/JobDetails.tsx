@@ -191,13 +191,7 @@ export const JobDetails: React.FC = () => {
   const handleCoverLetterChange = (e: any) => {
     setCoverLetter(e.target.value);
   };
-
-  console.log(defaultPdf);
-  console.log(coverLetter);
-  console.log(specificJob._id);
-  console.log(User._id);
   
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
