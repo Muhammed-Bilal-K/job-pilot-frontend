@@ -126,7 +126,6 @@ const PopularJobs: React.FC = () => {
     const fetchData = async () => {
       try {
         const res = await ListAllJobs({}, 0);
-        console.log(res.jobs);
         setJoblist(res.jobs);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -136,8 +135,6 @@ const PopularJobs: React.FC = () => {
   }, []);
 
   const handleClick = (job: any) => {
-    console.log(job);
-    console.log(job._id);
     navigate(`/find-job/job-details/${job._id}`);
   };
 

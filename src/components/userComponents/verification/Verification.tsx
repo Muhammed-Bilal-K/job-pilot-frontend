@@ -52,7 +52,6 @@ const Verification: React.FC = () => {
         };
 
         const res =await activeUser(newUserVerification);
-        console.log(res.data);
         if (res.data.message == 'Account activated successfully') {
           localStorage.removeItem('VerifyToken')
           message.success("Account activated successfully");

@@ -32,7 +32,6 @@ const Bills: React.FC = () => {
     const fetchData = async () => {
       try {
         const res = await GetAllPlansDetails();
-        console.log(res.data.planDetail);
         setBills(res.data.planDetail);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -88,7 +87,6 @@ const Bills: React.FC = () => {
     }).then( async (result) => {
       if (result.isConfirmed) {
         const adminToken = localStorage.getItem('AdminToken');
-        console.log(adminToken);
         const res = await PlanDeletedByAdmin(id,adminToken!);
         if (res.status) {
           Swal.fire({
@@ -115,14 +113,12 @@ const Bills: React.FC = () => {
     if (modalMode === 'add') {
       const adminToken = localStorage.getItem('AdminToken');
       const added = await PlanCreatedByAdmin(planData , adminToken!);
-      console.log(added.data);
+    
       if (added.data) {
         location.reload();
       }
     } else if (modalMode === 'edit' && editedPlanId) { 
-      const updated = await UpdatePlan(editedPlanId, planData);
-      console.log(updated);
-      
+      await UpdatePlan(editedPlanId, planData);
     }
 
     setIsModalOpen(!isModalOpen);

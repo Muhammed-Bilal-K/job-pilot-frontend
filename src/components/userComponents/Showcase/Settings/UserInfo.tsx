@@ -60,7 +60,6 @@ const UserInfo: React.FC = () => {
       if (User?._id) {
         const response = await GetSpecificUser(User._id);
         if (response.user) {
-          console.log(response.user);
           setUserInfo(response.user);
         }
       }
@@ -103,7 +102,6 @@ const UserInfo: React.FC = () => {
         await uploadBytes(resumeRef, resumeFile);
         resumeURL = await getDownloadURL(resumeRef);
         // You can do something with the resume URL here, like saving it to state or database
-        console.log("Resume uploaded successfully. URL:", resumeURL);
         message.info("Resume uploaded successfully");
       } catch (error) {
         console.error("Error uploading resume:", error);
@@ -134,8 +132,6 @@ const UserInfo: React.FC = () => {
 
         await uploadBytes(logoRef, logoFile);
         logoURL = await getDownloadURL(logoRef);
-        console.log(logoURL);
-        
       } else {
         message.info(
           "File size exceeds 4 MB limit. Please choose a smaller file"
@@ -156,8 +152,6 @@ const UserInfo: React.FC = () => {
         logo: logoURL,
         resumeUrl: resumeURL,
       };
-      console.log(datas);
-
       if (datas.logo === "") {
         message.info("Input can't Empty");
         return;
@@ -168,8 +162,6 @@ const UserInfo: React.FC = () => {
         return;
       }
 
-      console.log(datas);
-
       const res = await HandleUserRestInfo(datas);
       if (res) {
         message.success("profile updated successfully");
@@ -179,8 +171,6 @@ const UserInfo: React.FC = () => {
       console.log(error);
     }
   };
-
-  console.log(userInfo);
 
   return (
     <div className="showcase">

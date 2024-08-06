@@ -11,7 +11,6 @@ export const ShortList: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const respo = await SpecificJobAppliedCandiadates(id!);
-      console.log(respo.jobs);
       setApplications(respo.jobs);
     };
     fetchData();

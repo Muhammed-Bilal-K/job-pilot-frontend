@@ -30,7 +30,6 @@ const NavBar: React.FC<NavBarProps> = ({
   const User: any = useSelector((state: RootState) => {
     return state.user.currentUser;
   });
-  console.log(User);
 
   const HandleShowDetail = () => {
     setShowModal(true);
@@ -46,7 +45,6 @@ const NavBar: React.FC<NavBarProps> = ({
     if (User?._id) {
       const fetchData = async () => {
         const response = await getAllNotification(User?._id);
-        console.log(response);
         setnotifyData(response);
       };
       fetchData();

@@ -72,7 +72,6 @@ const Candidate: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await allEmployers();
-      console.log(res.Users);
       setUsers(res.Users);
     };
     fetchData();

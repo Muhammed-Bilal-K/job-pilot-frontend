@@ -54,7 +54,6 @@ const FoundingInfo: React.FC = () => {
   const Employer: any = useSelector((state: RootState) => {
     return state.employer.currentEmployer;
   });
-  console.log(Employer);
 
   useEffect(() => {
     if (Employer) {
@@ -82,14 +81,11 @@ const FoundingInfo: React.FC = () => {
     if (Employer?._id) {
       const fetchData = async () => {
         const respo = await GetSpecificCompany(Employer._id);
-        console.log(respo.Company);
         setEmpInfo(respo.Company);
       };
       fetchData();
     }
   }, [Employer?._id]);
-
-  console.log(empInfo, "from the emplo infppppppp");
 
   const OrganizationTypeRef = useRef<HTMLSelectElement>(null);
   const IndustryTypeRef = useRef<HTMLSelectElement>(null);
@@ -132,11 +128,8 @@ const FoundingInfo: React.FC = () => {
         socialLinks1: SocialLinks1,
         socialLinks2: SocialLinks2,
       };
-      console.log(datas);
-
       const res = await UpdateCompanyInfo(datas);
       message.loading('progressing.....')
-      console.log(res);
       if (res.message == 'Company Data saved successfully.') {
         message.success(res.data.message);
         location.reload();

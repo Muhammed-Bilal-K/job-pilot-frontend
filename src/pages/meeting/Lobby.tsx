@@ -12,8 +12,6 @@ const LobbyScreen: React.FC = () => {
   const handleSubmitForm = useCallback((e: { preventDefault: () => void; }) => {
     e.preventDefault();
       socket?.emit("room:join", { email, room });
-    console.log(email);
-    console.log(room);
     
   }, [email , room , socket]);
 

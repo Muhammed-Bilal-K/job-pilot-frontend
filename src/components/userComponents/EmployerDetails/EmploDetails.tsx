@@ -67,8 +67,6 @@ export const EmploDetails: React.FC = () => {
     if (specificCompany?.email) {
       const fetchData = async () => {
         const res = await EmployerSpecificJobs(specificCompany?.email);
-        console.log(res.jobs);
-  
         setJoblist(res.jobs);
       };
       fetchData();
@@ -77,9 +75,6 @@ export const EmploDetails: React.FC = () => {
 
 
   const handleClick = (job: any) => {
-    console.log(job);
-
-    console.log(job._id);
     navigate(`/find-job/job-details/${job._id}`);
   };
 
@@ -94,7 +89,6 @@ export const EmploDetails: React.FC = () => {
 
   //   try {
   //     // const res = await MakeFavoriteJob(User._id, jobInfo);
-  //     // console.log(res);
   //     // message.info(res.message);
   //   } catch (error) {
   //     console.error("Error fetching data:", error);

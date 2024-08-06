@@ -24,7 +24,6 @@ const UserAccount: React.FC = () => {
   //   const Employer: any = useSelector((state: RootState) => {
   //     return state.employer.currentEmployer;
   //   });
-  //   console.log(Employer);
 
   //   useEffect(() => {
   //     if (Employer) {

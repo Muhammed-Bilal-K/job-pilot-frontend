@@ -21,8 +21,6 @@ const Dashboard: React.FC = () => {
   const User: any = useSelector((state: RootState) => {
     return state.user.currentUser;
   });
-  console.log(User);
-
   useEffect(() => {
     if (User) {
       setCandidate(User?.fullname);
@@ -32,7 +30,6 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await GetSpecificUser(User._id);
-      console.log(response.user);
       setCheckAbleApply(response.user);
     };
     fetchUser();
@@ -53,8 +50,6 @@ const Dashboard: React.FC = () => {
       fetchUserData(token);
     }
   }, [candidate]);
-
-  console.log(checkAbleApply);
 
   return (
     <div className="showcase">

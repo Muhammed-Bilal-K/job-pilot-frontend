@@ -26,7 +26,6 @@ const NavBar: React.FC<NavBarProps> = ({ logo, notificationIcon }) => {
   const Employer: any = useSelector((state: RootState) => {
     return state.employer.currentEmployer;
   });
-  console.log(Employer);
 
   const HandleShowDetail = () => {
     setShowModal(true);
@@ -36,7 +35,6 @@ const NavBar: React.FC<NavBarProps> = ({ logo, notificationIcon }) => {
     if (Employer?._id) {
       const fetchData = async () => {
         const response = await getAllNotification(Employer?._id);
-        console.log(response);
         setnotifyData(response);
       };
       fetchData();
@@ -46,15 +44,12 @@ const NavBar: React.FC<NavBarProps> = ({ logo, notificationIcon }) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await GetSpecificCompany(Employer?._id);
-      console.log(response.Company);
       if (response.Company) {
         setEmpInfo(response.Company);
       }
     };
     fetchData();
   }, [Employer?._id]);
-
-  console.log(notifyData);
 
   return (
     <>

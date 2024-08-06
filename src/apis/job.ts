@@ -38,9 +38,6 @@ export const JobAppliedCandiadate = async (id: string , jobId : string) => {
 //Api3  --> Api
 export const MakeShortListCandidate = async (id: string , jobId : string) => {
   try {
-    console.log(id);
-    console.log(jobId);
-    
     const res = await Api.put(JobRoute.MakeShortListCandidate(id , jobId));
     return res.data;
   } catch (error) {

@@ -17,7 +17,6 @@ import { RootState } from "../../../../redux/store";
 const AllApplicant: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  console.log(id);
   const [applications, setApplications] = useState<any[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [specificUserId, setSpecificUserId] = useState<string>("");
@@ -28,12 +27,10 @@ const AllApplicant: React.FC = () => {
   const Employer: any = useSelector((state: RootState) => {
     return state.employer.currentEmployer;
   });
-  console.log(Employer);
 
   useEffect(() => {
     const fetchData = async () => {
       const respo = await SpecificJobAppliedCandiadates(id!);
-      console.log(respo.jobs);
       setApplications(respo.jobs);
     };
     fetchData();
@@ -41,7 +38,6 @@ const AllApplicant: React.FC = () => {
 
   const HandleShowDetail = async (UserId: string) => {
     setShowModal(true);
-    console.log(UserId);
     setSpecificUserId(UserId);
   };
 
@@ -52,16 +48,12 @@ const AllApplicant: React.FC = () => {
       message : `your applications viewed by ${Employer.fullname} company`
     }
     message.success("successfull added");
-    console.log(JobAppliedView);
-    
-    const respo = await JobAppliedViewUpdate(JobAppliedView);
-    console.log(respo);
+    await JobAppliedViewUpdate(JobAppliedView);
   }
 
   const HandleCandidateShortList = async (UserId: string) => {
     try {
       const respo = await MakeShortListCandidate(UserId, id!);
-      console.log(respo);
       if (respo.message) {
         message.success("User Shortlisted successfully.");
       }
@@ -83,8 +75,6 @@ const AllApplicant: React.FC = () => {
   }, [specificUserId]);
 
   const createConverBwUser = async (compId: string, userId: string) => {
-    console.log(compId);
-    console.log(userId);
     const allData = {
       senderId: compId,
       recieverId: userId,
@@ -98,7 +88,6 @@ const AllApplicant: React.FC = () => {
 
     try {
       const res = await CreateConversation(allData);
-      console.log(res);
       if (res.convo) {
         message.success("conversation created successfully");
       }
@@ -109,9 +98,6 @@ const AllApplicant: React.FC = () => {
       console.log(error);
     }
   };
-
-  console.log(specificUserByJobInfo);
-  console.log(specificUserPersonalDetail);
 
   return (
     <>

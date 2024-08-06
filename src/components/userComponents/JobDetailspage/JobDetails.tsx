@@ -46,7 +46,6 @@ export const JobDetails: React.FC = () => {
   const User: any = useSelector((state: RootState) => {
     return state.user.currentUser;
   });
-  console.log(User);
 
   const HandleNotLogin = () => {
     message.info("Need to login");
@@ -55,7 +54,6 @@ export const JobDetails: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await GetSpecificUser(User._id);
-      console.log(response.user);
       setCheckAbleApply(response.user);
     };
     fetchUser();
@@ -72,7 +70,6 @@ export const JobDetails: React.FC = () => {
       if (User?._id) {
         const response = await GetSpecificUser(User._id);
         if (response.user) {
-          console.log(response.user);
           // setUserInfo(response.user);
           setDefaultPdf(response.user.resumeUrl);
         }
@@ -88,7 +85,6 @@ export const JobDetails: React.FC = () => {
       const fetchUserData = async (token: string) => {
         try {
           const user = await currentUser(token);
-          console.log(user.data.currentUser);
           dispatch(LoginInSuccess(user.data.currentUser));
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -103,28 +99,21 @@ export const JobDetails: React.FC = () => {
     setIsChecked(!isChecked);
   };
 
-  console.log(isChecked);
-
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
         const res = await ListAllJobs({}, 0);
-        console.log(res.jobs);
-
         const jobArray = res.jobs;
         const job = jobArray.find((job: any) => job._id === id);
-        console.log(job);
         setSpecificJob(job);
 
         const response = await ListAllJobApplicant();
-        console.log(response.data.jobs);
         if (response.data.jobs) {
           const Applicant = response.data.jobs;
           const AppliedJobCheck = Applicant.filter(
             (job: any) => job.user === User?._id
           );
           setJobCheck(AppliedJobCheck);
-          console.log(AppliedJobCheck);
         }
       } catch (error) {
         console.error("Error fetching job details:", error);
@@ -172,18 +161,14 @@ export const JobDetails: React.FC = () => {
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
-    console.log(file, "data");
-
     if (file) {
       const fileType = file.type;
       if (fileType === "application/pdf") {
         setSelectedFile(file);
         setFileError("");
-        console.log("Selected file:", file.name);
       } else {
         setSelectedFile(null);
         setFileError("Please select a PDF file.");
-        console.log("Please select a PDF file.");
       }
     }
   };
@@ -195,9 +180,6 @@ export const JobDetails: React.FC = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    console.log(specificJob._id);
-    console.log(User._id);
-    
     if (User._id === '' || specificJob._id === '' || coverLetter === '') {
       message.info('complete all details!');
       return
@@ -218,7 +200,6 @@ export const JobDetails: React.FC = () => {
           jobId: specificJob._id,
           userId: User._id,
         });
-        console.log(job);
         if (job.message === "job applied successfull.") {
           message.success("Job Applied Successfully!");
           setTimeout(() => {
@@ -254,8 +235,6 @@ export const JobDetails: React.FC = () => {
           jobId: specificJob._id,
           userId: User._id,
         });
-
-        console.log(job);
 
         if (job.message === "job applied successfull.") {
           message.success("Job Applied Successfully!");

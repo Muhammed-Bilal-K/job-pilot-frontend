@@ -13,18 +13,14 @@ const MyJobs: React.FC = () => {
   const Employer: any = useSelector((state: RootState) => {
     return state.employer.currentEmployer;
   });
-  console.log(Employer);
 
   const handleViewApplications = (id: string) => {
-    console.log(id);
     navigate(`${id}/all_applicants`);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await EmployerSpecificJobs(Employer?.email);
-      console.log(res.jobs);
-
       setJobs(res.jobs);
     };
     fetchData();

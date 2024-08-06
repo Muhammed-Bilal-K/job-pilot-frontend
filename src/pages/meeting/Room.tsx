@@ -29,14 +29,12 @@ const RoomPage: React.FC = () => {
 
   const handleIncommingCall = useCallback(
     async ({ from, offer }: { from: string; offer: any }) => {
-      console.log("incoming call", from, offer);
       setRemoteSocketId(from);
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
         video: true,
       });
       setMyStream(stream);
-      console.log(`Incoming Call`, from, offer);
       const ans = await peer.getAnswer(offer);
       socket?.emit("call:accepted", { to: from, ans });
     },
@@ -53,9 +51,8 @@ const RoomPage: React.FC = () => {
 
   const handleCallAccepted = useCallback(
     ({ from, ans }: { from: any; ans: any }) => {
-      console.log("incoming call", from, ans);
+      console.log("incoming call", from, ans)
       peer.setLocalDescription(ans);
-      console.log("Call Accepted!");
       sendStreams();
     },
     []
@@ -89,7 +86,6 @@ const RoomPage: React.FC = () => {
     if (peer.peer) {
       peer.peer.addEventListener("track", async (ev: { streams: any }) => {
         const remoteStream = ev.streams;
-        console.log("GOT TRACKS!!");
         setRemoteStream(remoteStream[0]);
       });
     }

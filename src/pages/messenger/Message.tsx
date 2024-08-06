@@ -9,13 +9,9 @@ interface MessageProps {
 }
 
 const Message: React.FC<MessageProps> = ({ own, message }) => {
-  console.log(message);
   const timeAgo = formatDistanceToNow(new Date(message.createdAt), {
     addSuffix: true,
-  });
-
-  console.log(message);
-  
+  });  
 
   return (
     <>

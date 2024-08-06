@@ -32,10 +32,6 @@ const Login: React.FC = () => {
 
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log({
-      email,
-      password,
-    });
     try {
       if (email.trim() == "" || password.trim() == "") {
         message.info("Input can't empty!");
@@ -46,7 +42,6 @@ const Login: React.FC = () => {
         password: password,
       };
       const res = await login(UserLogin);
-      console.log(res.data);
       if (res.data.message == "Account logined successfully") {
         message.success(res.data.message);
         if (res.data.user.role === "employer") {
@@ -87,14 +82,11 @@ const Login: React.FC = () => {
     decodedToken: JwtPayload & IPassCredential
   ) => {
     try {
-      console.log(decodedToken);
-
       const socialAuth: ISocialAuth = {
         email: decodedToken.email,
       };
-      console.log(socialAuth);
       const res = await SocialAuth(socialAuth);
-      console.log(res.data);
+      
       if (res.data.message == "signed successfully") {
         message.success(res.data.message);
         if (res.data.user.role === "employer") {

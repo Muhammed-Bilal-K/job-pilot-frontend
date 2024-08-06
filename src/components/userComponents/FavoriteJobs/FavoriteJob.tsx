@@ -24,12 +24,9 @@ const FavoriteJob: React.FC = () => {
   const User: any = useSelector((state: RootState) => {
     return state.user.currentUser;
   });
-  console.log(User);
-
   useEffect(() => {
     if (User) {
       setCandidate(User?.fullname);
-      console.log(User?.fullname);
     }
   }, [candidate]);
 
@@ -50,20 +47,17 @@ const FavoriteJob: React.FC = () => {
   }, [candidate,User]);
 
   function handleViewDetails(id: string) {
-    console.log(id);
     navigate(`/find-job/job-details/${id}`);
   }
 
   useEffect(() => {
     const fetchData = async () => {
       const user = await FavoriteJobByUser(User?._id);
-      console.log(user.jobs.favoriteJobs);
       setJobs(user.jobs.favoriteJobs);
     };
     fetchData();
   }, [User?._id]);
 
-  console.log(job);
   return (
     <div className="showcase">
       <ShowLeftComponent />

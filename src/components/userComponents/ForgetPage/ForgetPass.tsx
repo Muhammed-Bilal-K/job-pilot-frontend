@@ -15,7 +15,6 @@ const ForgetPass: React.FC = () => {
   const handleForget = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-      console.log(email);
       if(email == '' ){
         message.info("Invalid Email!");
         return ;
@@ -24,8 +23,6 @@ const ForgetPass: React.FC = () => {
         email: email,
       };
       const res =await UserByEmail(newUserRegi);
-      console.log(res.data);
-      
       if(res.data.message == "Email Found Successfully!"){
         message.success(res.data.message);
         setTimeout(()=>{

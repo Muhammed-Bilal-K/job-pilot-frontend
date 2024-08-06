@@ -112,9 +112,6 @@ const Postjob: React.FC = () => {
   const Employer : any = useSelector((state : RootState) => {
     return state.employer.currentEmployer;
   });
-  console.log(Employer);
-  
-  
 
   const [planDetail, setPlanDetail] = useState<Plan[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -166,7 +163,6 @@ const Postjob: React.FC = () => {
     const fetchData = async () => {
       try {
         const res = await GetAllPlansDetails();
-        console.log(res.data.planDetail);
         setPlanDetail(res.data.planDetail);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -179,7 +175,6 @@ const Postjob: React.FC = () => {
     const fetchData = async () => {
       try {
         const res = await CurrentAuthInfo();
-        console.log(res.data.AuthInfo);
         SetcompAuth(res.data.AuthInfo);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -192,7 +187,6 @@ const Postjob: React.FC = () => {
     const fetchData = async () => {
       try {
         const res = await GetCompanyInfo();
-        console.log(res.data.comInfo);
         setComp(res.data.comInfo);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -200,16 +194,10 @@ const Postjob: React.FC = () => {
     };
     fetchData();
   }, []);
-
-  console.log(compAuth);
   
-
   useEffect(() => {
     const cmp = localStorage.getItem("Company");
-    console.log(cmp);
-    
     const authId = compAuth.find((v) => v.name === cmp);
-    console.log(authId);
     if (authId && authId.stripeCustomerId != "None") {
       setIsModalOpen(true);
     }
@@ -221,7 +209,6 @@ const Postjob: React.FC = () => {
   useEffect(() => {
     const cmp = localStorage.getItem("Company");
     const referenceId = comp.find((value) => value.companyname === cmp);
-    console.log(referenceId);
 
     if (referenceId) {
       setFormData((prevFormData) => ({
@@ -235,15 +222,11 @@ const Postjob: React.FC = () => {
     const fetchData = async () => {
       if (Employer?._id) {
         const respo = await GetSpecificCompany(Employer._id);
-        console.log(respo.Company);
         setJoblist(respo.Company);
       }
     };
     fetchData();
   }, [Employer?._id]);
-
-  console.log(joblist);
-  
   
   const HandleSubcription = async (planId: string) => {
 
@@ -272,10 +255,8 @@ const Postjob: React.FC = () => {
       companyId: companyId,
       planAmount: plan?.amount,
     };
-    console.log(allData);
     
     const res = await makePayment(allData);
-    console.log(res.data.url);
     if (res.data.url) {
       window.location.href = res.data.url;
     }
@@ -457,10 +438,8 @@ const Postjob: React.FC = () => {
         setErrors(formErrors);
         return;
       }
-      console.log(formData);
       try {
         const res = await CreateJobByCompany(formData);
-        console.log(res.data);
         if (res.data.message == "job created successfully.") {
           message.success(res.data.message);
           setTimeout(() => {

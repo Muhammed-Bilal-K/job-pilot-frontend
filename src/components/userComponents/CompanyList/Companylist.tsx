@@ -50,8 +50,6 @@ const CompanyList: React.FC = () => {
   };
 
   const handleFilters = () => {
-    console.log(selectedIndustry);
-
     const queryParameters = {
       selectedIndustries: selectedIndustry || [],
     };
@@ -86,15 +84,10 @@ const CompanyList: React.FC = () => {
     setSearchApplied(true);
   };
 
-  console.log(currentPage);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(jobDiffFilter);
-
         const respo = await ListAllCompanies(jobDiffFilter, currentPage);
-        console.log(respo);
 
         setArrayNavCount(respo.current);
         setJoblist(respo.AllEmployers);
@@ -106,16 +99,11 @@ const CompanyList: React.FC = () => {
     fetchData();
   }, [jobDiffFilter, currentPage]);
 
-  console.log(arrayNavCount);
-  const pageNumbers = Array.from({ length: arrayNavCount }, (_, i) => i + 1);
-
-  console.log(pageNumbers);
+  Array.from({ length: arrayNavCount }, (_, i) => i + 1);
 
   const handleClick = (job: any) => {
-    console.log(job);
 
     setSelectedJob(job);
-    console.log(job._id);
     navigate(`/find-employer/employer-details/${job.companyId}`);
   };
 

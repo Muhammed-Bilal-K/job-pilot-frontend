@@ -17,10 +17,6 @@ const AdminLogin : React.FC = () => {
 
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log({
-      email,
-      password,
-    });
     try {
       if(email.trim() == '' || password.trim() == ''){
         message.info("Input can't empty!");
@@ -31,7 +27,6 @@ const AdminLogin : React.FC = () => {
         password: password,
       };
       const res =await LoginByAdmin(AdminLogin);
-      console.log(res.data);
       if(res.data.message == "Account logined successfully"){
         message.success(res.data.message);
         localStorage.setItem("AdminToken", res.data.token);

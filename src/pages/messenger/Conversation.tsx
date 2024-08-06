@@ -15,17 +15,12 @@ const HandleSenderId = (c: any) => {
 const Conversation: React.FC<ConversationProps> = ({ conv, currentUser }) => {
   const [user, setuser] = useState<{ username: string }>({ username: "" });
   const navigate = useNavigate();
-  console.log(currentUser);
-  console.log(conv);
-
   useEffect(() => {
     const frinedId = conv.members.find(
       (m: { _id: string }) => m._id !== currentUser
     );
-    console.log(frinedId);
     setuser(frinedId);
   }, [conv, currentUser]);
-  console.log(user);
 
   const timeAgo = formatDistanceToNow(new Date(conv.updatedAt), {
     addSuffix: true,

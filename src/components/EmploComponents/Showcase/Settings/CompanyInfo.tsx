@@ -45,7 +45,6 @@ const CompanyInfo: React.FC = () => {
   const Employer: any = useSelector((state: RootState) => {
     return state.employer.currentEmployer;
   });
-  console.log(Employer);
 
   useEffect(() => {
     if (Employer) {
@@ -83,8 +82,6 @@ const CompanyInfo: React.FC = () => {
     };
     fetchData();
   }, [Employer?._id]);
-
-  console.log(empInfo);
 
   const logoInputRef = useRef<HTMLInputElement>(null);
   const bannerInputRef = useRef<HTMLInputElement>(null);
@@ -158,8 +155,6 @@ const CompanyInfo: React.FC = () => {
         logo: logoURL,
         banner: bannerURL,
       };
-      console.log(datas);
-      
       const res = await SubmitCompnayInfo(datas);
       message.loading('progressing.....')
       if (res) {

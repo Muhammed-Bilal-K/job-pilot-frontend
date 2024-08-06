@@ -23,7 +23,6 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await allEmployers();
-      console.log(res.Users);
       setUsers(res.Users);
     };
     fetchData();
@@ -33,9 +32,7 @@ const Dashboard: React.FC = () => {
 
   const BtnVerifyDone = async (id: string) => {
     try {
-      console.log(id);
-      const res = await VerifyEmployer(id);
-      console.log(res);
+      await VerifyEmployer(id);
       location.reload();
     } catch (error: any) {
       console.log(error);
@@ -44,10 +41,8 @@ const Dashboard: React.FC = () => {
   
   const BtnVerifyDenied = async (id: string) => {
     try {
-      console.log(id);
-      const res = await DeniedEmployer(id);
+      await DeniedEmployer(id);
       location.reload();
-      console.log(res);
     } catch (error: any) {
       console.log(error);
     }

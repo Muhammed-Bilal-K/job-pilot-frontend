@@ -71,21 +71,18 @@ const Candidate: React.FC = () => {
   // const HandleBlock = async (id: string) => {
   //   try {
   //    const res = await blockUser(id);
-  //    console.log(res.success);
   //    if (res.success === true) {
   //     setTimeout(() => {
   //       location.reload();
   //     }, 100);
   //    }
   //   } catch (error) {
-  //     console.log(error);
   //   }
   // };
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await allUsers();
-      console.log(res.Users);
       setUsers(res.Users);
     };
     fetchData();

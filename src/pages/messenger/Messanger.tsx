@@ -26,7 +26,6 @@ interface UserData {
 const Messanger: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  console.log(id);
   const [conver, setConver] = useState<any[]>([]);
   const [currentChat, setCurrentChat] = useState<ConversationType | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
@@ -48,7 +47,6 @@ const Messanger: React.FC = () => {
     });
 
     socket.current.on("getMessage", (data: any) => {
-      console.log(data);
       setArrivalMessage({
         conversationId: currentChat?._id,
         sender: data.senderId,
@@ -84,24 +82,20 @@ const Messanger: React.FC = () => {
       });
     }
   }, [id, socket.current]);
-
   console.log(online);
 
   useEffect(() => {
     const fetchData = async () => {
       const respo = await listConversation(id!);
-      console.log(respo.convo);
       setConver(respo.convo);
     };
     fetchData();
   }, [id]);
 
-  console.log(currentChat);
   useEffect(() => {
     const fetchData = async () => {
       if (currentChat) {
         const respo = await getMessagesList(currentChat._id);
-        console.log(respo.convo);
         setMessages(respo.convo);
       }
     };
@@ -123,7 +117,6 @@ const Messanger: React.FC = () => {
 
       if (currentChat) {
         const receiverId = localStorage.getItem("senderIdforMessage");
-        console.log(receiverId);
         socket.current.emit("sendMessage", {
           senderId: id,
           receiverId: receiverId,
@@ -131,10 +124,8 @@ const Messanger: React.FC = () => {
         });
       }
 
-      console.log({ ...message });
       try {
         const respo = await sendMessageBySeperate(message);
-        console.log(respo.message);
         setMessages([...messages, respo.message]);
         setNewMessage("");
       } catch (error: any) {
@@ -147,8 +138,6 @@ const Messanger: React.FC = () => {
     const frinedId = currentChat?.members.find(
       (m: { _id: string }) => m._id !== id
     );
-    console.log(frinedId);
-
     setCompanyName(frinedId);
   }, [currentChat]);
 
