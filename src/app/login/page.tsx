@@ -183,10 +183,10 @@ const Login: React.FC = () => {
             onError={handleGoogleSignInError}
           />
         </div>
-      <h6>candidate can register directly</h6>
+      {/* <h6>candidate can register directly</h6>
       <h6>employer credential example</h6>
       <h6 className="text-xs">email : jebaw72817@acentni.com</h6>
-      <h6 className="text-xs">pass : 12345</h6>
+      <h6 className="text-xs">pass : 12345</h6> */}
       </div>
       <div className="register-image hidden lg:flex">
         <img src={loginlogo} alt="Registration" className="h-full w-auto" />
